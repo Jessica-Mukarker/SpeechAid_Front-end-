@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:speech_aid/Dashboard.dart';
+import '../Dashboard.dart';
+import 'signup.dart'; // Import the signup class
 
 class login extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();
@@ -17,16 +18,16 @@ class login extends StatelessWidget {
     if (enteredUsername == validUsername && enteredPassword == validPassword) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const Dashboard()),
+        MaterialPageRoute(builder: (context) => Dashboard()),
       );
     } else {
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text('خطا'),
+            title: const Text('خطأ'),
             content: const Text(
-                'اسم المستخدم او كلمة السر خطا\n يرجى المحاولة مرة اخرى'),
+                'اسم المستخدم أو كلمة المرور خاطئة\n يرجى المحاولة مرة أخرى'),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
@@ -43,39 +44,137 @@ class login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sign In'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/image.png', // Assuming you have the Google logo image in your assets folder
-              width: 120, // Adjust the size of the icon
-              height: 120,
-            ), // a
-            TextField(
-              controller: _usernameController,
-              decoration: const InputDecoration(labelText: 'اسم المستخدم'),
-            ),
-            const SizedBox(height: 12.0),
-            TextField(
-              controller: _passwordController,
-              decoration: const InputDecoration(labelText: 'كلمة السر'),
-              obscureText: true,
-            ),
-            const SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () {
-                _authenticateUser(context);
-              },
-              child: const Text('تسجيل الدخول'),
-            ),
-          ],
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Sign In'),
+        ),
+        body: Container(
+          color: const Color(0xFF528FAA), // Set background color
+          padding: const EdgeInsets.symmetric(horizontal: 24), // Adjust padding
+          width: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 60.0),
+              const Text(
+                "مرحبا مجددا",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                "ضع معلوماتك لنبدا معا",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 15, color: Colors.white),
+              ),
+              const SizedBox(height: 40),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      TextField(
+                        controller: _usernameController,
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          hintText: "اسم المستخدم",
+                          hintStyle: const TextStyle(color: Colors.white),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: BorderSide.none,
+                          ),
+                          filled: true,
+                          fillColor: Colors.white.withOpacity(0.2),
+                          prefixIcon:
+                              const Icon(Icons.person, color: Colors.white),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      TextField(
+                        controller: _passwordController,
+                        style: const TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          hintText: "كلمة السر",
+                          hintStyle: const TextStyle(color: Colors.white),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: BorderSide.none,
+                          ),
+                          filled: true,
+                          fillColor: Colors.white.withOpacity(0.2),
+                          prefixIcon:
+                              const Icon(Icons.password, color: Colors.white),
+                        ),
+                        obscureText: true,
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          _authenticateUser(context);
+                        },
+                        child: const Text(
+                          "تسجيل",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18)),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          primary: const Color.fromARGB(255, 255, 174, 229),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      TextButton(
+                        onPressed: () {},
+                        child: const Text(
+                          "هل نسيت الباسورد ؟",
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 255, 174, 229),
+                          ),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              // Navigate to the signup screen
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const signup()),
+                              );
+                            },
+                            child: const Text(
+                              "اشترك معنا",
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 255, 174, 229),
+                              ),
+                            ),
+                          ),
+                          const Text(
+                            "لا تملك حساب ؟",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                      Image.asset(
+                        'assets/image.png', // Assuming you have the Google logo image in your assets folder
+                        width: 200, // Adjust the size of the icon
+                        height: 200,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

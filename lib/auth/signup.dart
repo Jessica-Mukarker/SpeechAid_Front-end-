@@ -1,147 +1,175 @@
 import 'package:flutter/material.dart';
+import 'login.dart'; // Import the login class
 
-
-class signup extends StatefulWidget {
-  const signup({Key? key}) : super(key: key);
-
-  @override
-  _signupState createState() => _signupState();
-}
-
-class _signupState extends State<signup> {
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _dobController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-
-  void _signUp() {
-    // Implement sign-up logic here
-    // Validate user inputs, save user information, etc.
-
-    // After sign-up process is completed, navigate back to the main page
-    Navigator.pop(context);
-  }
+class signup extends StatelessWidget {
+  const signup({Key? key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('اشترك معنا'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Image.asset(
-              'assets/image.png', // Assuming you have the Google logo image in your assets folder
-              width: 150, // Adjust the size of the icon
-              height: 150,
-            ),
-            const SizedBox(height: 10.0),
-            const Text(
-              ' اشترك معنا',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 30,
-                color: Color.fromARGB(255, 255, 174, 229),
-                fontWeight: FontWeight.bold,
-                fontStyle: FontStyle.italic,
-              ),
-            ),
-            const SizedBox(height: 24.0), // Added extra spacing
-            SizedBox(
-              width: 70, // Adjust the width of the text fields
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Colors.white,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: TextField(
-                    controller: _firstNameController,
-                    decoration: const InputDecoration(
-                      labelText: 'الاسم الأول',
-                      border: InputBorder.none,
-                    ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: Container(
+          color: const Color(0xFF528FAA), // Set background color
+          padding: const EdgeInsets.symmetric(horizontal: 24), // Adjust padding
+          width: double.infinity,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                const SizedBox(height: 60.0),
+                Text(
+                  "اشترك معنا",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
-              ),
-            ),
-            const SizedBox(height: 12.0),
-            SizedBox(
-              width: 70, // Adjust the width of the text fields
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Colors.white,
+                const SizedBox(height: 20),
+                Text(
+                  "اعمل الحساب الخاص بك",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 15, color: Colors.grey[200]),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: TextField(
-                    controller: _lastNameController,
-                    decoration: const InputDecoration(
-                      labelText: 'الاسم الأخير',
-                      border: InputBorder.none,
+                const SizedBox(height: 40),
+                TextField(
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    hintText: "اسم المستخدم",
+                    hintStyle: TextStyle(color: Colors.white),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(18),
+                      borderSide: BorderSide.none,
                     ),
+                    filled: true,
+                    fillColor: Colors.white.withOpacity(0.2),
+                    prefixIcon: const Icon(Icons.person, color: Colors.white),
                   ),
                 ),
-              ),
-            ),
-            const SizedBox(height: 12.0),
-            SizedBox(
-              width: 70, // Adjust the width of the text fields
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Colors.white,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: TextField(
-                    controller: _dobController,
-                    decoration: const InputDecoration(
-                      labelText: 'تاريخ الميلاد',
-                      border: InputBorder.none,
+                const SizedBox(height: 20),
+                TextField(
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    hintText: "البريد الالكتروني",
+                    hintStyle: TextStyle(color: Colors.white),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(18),
+                      borderSide: BorderSide.none,
                     ),
+                    filled: true,
+                    fillColor: Colors.white.withOpacity(0.2),
+                    prefixIcon: const Icon(Icons.email, color: Colors.white),
                   ),
                 ),
-              ),
-            ),
-            const SizedBox(height: 12.0),
-            SizedBox(
-              width: 70, // Adjust the width of the text fields
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Colors.white,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: TextField(
-                    controller: _emailController,
-                    decoration: const InputDecoration(
-                      labelText: 'البريد الإلكتروني',
-                      border: InputBorder.none,
+                const SizedBox(height: 20),
+                TextField(
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    hintText: "كلمة السر",
+                    hintStyle: TextStyle(color: Colors.white),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(18),
+                      borderSide: BorderSide.none,
                     ),
+                    filled: true,
+                    fillColor: Colors.white.withOpacity(0.2),
+                    prefixIcon: const Icon(Icons.password, color: Colors.white),
+                  ),
+                  obscureText: true,
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    hintText: "تاريخ الميلاد",
+                    hintStyle: TextStyle(color: Colors.white),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(18),
+                      borderSide: BorderSide.none,
+                    ),
+                    filled: true,
+                    fillColor: Colors.white.withOpacity(0.2),
+                    prefixIcon:
+                        const Icon(Icons.calendar_month, color: Colors.white),
                   ),
                 ),
-              ),
+                const SizedBox(height: 40),
+                ElevatedButton(
+                  onPressed: () {},
+                  child: const Text(
+                    "اشترك",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18)),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    primary: const Color.fromARGB(255, 255, 174, 229),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text("أو",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white)),
+                const SizedBox(height: 20),
+                TextButton(
+                  onPressed: () {
+                    // Navigate to the login screen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) =>  login()),
+                    );
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/google.jpg',
+                        height: 30,
+                        width: 30,
+                      ),
+                      const SizedBox(width: 12),
+                      const Text(
+                        "تسجيل الدخول بواسطة جوجل",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Color.fromARGB(255, 255, 174, 229),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    const Text("لديك حساب مسبقا ؟",
+                        style: TextStyle(color: Colors.white)),
+                    TextButton(
+                      onPressed: () {
+                        // Navigate to the login screen
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => login()),
+                        );
+                      },
+                      child: const Text(
+                        "تسجيل الدخول",
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 255, 174, 229)),
+                      ),
+                    ),
+                  ],
+                )
+              ],
             ),
-            const SizedBox(height: 24.0), // Added extra spacing
-            ElevatedButton(
-              onPressed: _signUp,
-              child: const Text('اشترك'),
-            ),
-          ],
+          ),
         ),
       ),
     );
   }
 }
-/**Colors.red
-                  : _countdown == 2
-                      ? const Color.fromARGB(255, 255, 174, 229)
-                      : Color(0xFF528FAA),            
- */

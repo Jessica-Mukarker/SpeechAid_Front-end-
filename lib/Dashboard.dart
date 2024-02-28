@@ -20,7 +20,8 @@ class Dashboard extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const RecordingScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const RecordingScreen()),
                 );
               },
               child: const Text('Go to Recording Screen'), // Text on the button
