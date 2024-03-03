@@ -9,11 +9,12 @@ class signup extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: Container(
-          color: const Color(0xFF528FAA), // Set background color
-          padding: const EdgeInsets.symmetric(horizontal: 24), // Adjust padding
-          width: double.infinity,
-          child: SingleChildScrollView(
+        body: SingleChildScrollView(
+          child: Container(
+            color: const Color(0xFF528FAA), // Set background color
+            padding:
+                const EdgeInsets.symmetric(horizontal: 24), // Adjust padding
+            width: double.infinity,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -120,7 +121,7 @@ class signup extends StatelessWidget {
                     // Navigate to the login screen
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) =>  login()),
+                      MaterialPageRoute(builder: (context) => login()),
                     );
                   },
                   child: Row(
@@ -153,8 +154,7 @@ class signup extends StatelessWidget {
                         // Navigate to the login screen
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => login()),
+                          MaterialPageRoute(builder: (context) => login()),
                         );
                       },
                       child: const Text(
