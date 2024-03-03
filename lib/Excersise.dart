@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:speech_aid/RecordingScreen.dart';
 
 class Excersise extends StatelessWidget {
   const Excersise({Key? key}) : super(key: key);
@@ -26,11 +27,11 @@ class Excersise extends StatelessWidget {
                   child: Row(
                     children: [
                       Icon(Icons.person, color: Colors.black, size: 24),
-                      SizedBox(width: 5),
+                      SizedBox(width: 10), // Increased width
                       Text(
                         'الحساب الشخصي',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 18, // Increased font size
                           color: Colors.black,
                         ),
                       ),
@@ -43,11 +44,11 @@ class Excersise extends StatelessWidget {
                   child: Row(
                     children: [
                       Icon(Icons.mic, color: Colors.black, size: 24),
-                      SizedBox(width: 5),
+                      SizedBox(width: 10), // Increased width
                       Text(
                         'صفحة التسجيلات',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 18, // Increased font size
                           color: Colors.black,
                         ),
                       ),
@@ -60,11 +61,11 @@ class Excersise extends StatelessWidget {
                   child: Row(
                     children: [
                       Icon(Icons.history, color: Colors.black, size: 24),
-                      SizedBox(width: 5),
+                      SizedBox(width: 10), // Increased width
                       Text(
                         'تاريخ التسجيلات',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 18, // Increased font size
                           color: Colors.black,
                         ),
                       ),
@@ -77,11 +78,11 @@ class Excersise extends StatelessWidget {
                   child: Row(
                     children: [
                       Icon(Icons.local_hospital, color: Colors.black, size: 24),
-                      SizedBox(width: 5),
+                      SizedBox(width: 10), // Increased width
                       Text(
                         'موقع العيادة',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 18, // Increased font size
                           color: Colors.black,
                         ),
                       ),
@@ -94,11 +95,11 @@ class Excersise extends StatelessWidget {
                   child: Row(
                     children: [
                       Icon(Icons.info, color: Colors.black, size: 24),
-                      SizedBox(width: 5),
+                      SizedBox(width: 10), // Increased width
                       Text(
                         'معلومات المعالج',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 18, // Increased font size
                           color: Colors.black,
                         ),
                       ),
@@ -111,21 +112,27 @@ class Excersise extends StatelessWidget {
                   child: Row(
                     children: [
                       Icon(Icons.logout, color: Colors.black, size: 24),
-                      SizedBox(width: 5),
+                      SizedBox(width: 10), // Increased width
                       Text(
                         'تسجيل الخروج',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 18, // Increased font size
                           color: Colors.black,
                         ),
                       ),
                     ],
                   ),
                 ),
+                // Add more menu items as needed
               ];
             },
             onSelected: (value) {
-              if (value == 'Log Out') {
+              if (value == 'Recordings') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RecordingScreen()),
+                );
+              } else if (value == 'Log Out') {
                 Navigator.pop(context); // Close the menu
                 Navigator.pop(context); // Go back to the previous screen
               } else {
@@ -136,39 +143,50 @@ class Excersise extends StatelessWidget {
         ],
       ),
       body: GridView.count(
-        crossAxisCount: 3,
-        padding: const EdgeInsets.all(8),
+        crossAxisCount: 2,
+        padding: const EdgeInsets.all(20), // Increased padding
+        childAspectRatio: 2.5, // Adjust aspect ratio
         children: [
           KidActivityCard(
             title: ' المقاطع القصيرة',
             icon: Icons.brush,
             onTap: () {
-              // Handle activity tap
-              // For example, navigate to the drawing screen
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => RecordingScreen()),
+              );
             },
           ),
+
           KidActivityCard(
             title: 'المقاطع الطويلة',
             icon: Icons.mic,
             onTap: () {
-              // Handle activity tap
-              // For example, navigate to the reading screen
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => RecordingScreen()),
+              );
             },
           ),
+
           KidActivityCard(
             title: 'كلمات',
             icon: Icons.book,
             onTap: () {
-              // Handle activity tap
-              // For example, navigate to the reading screen
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => RecordingScreen()),
+              );
             },
           ),
           KidActivityCard(
-            title: 'كلمات',
+            title: 'الاحرف',
             icon: Icons.book,
             onTap: () {
-              // Handle activity tap
-              // For example, navigate to the reading screen
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => RecordingScreen()),
+              );
             },
           ),
           // Add more activity cards as needed
