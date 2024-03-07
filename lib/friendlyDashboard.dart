@@ -155,30 +155,31 @@ class FriendlyDashboard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ClipRect(
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      widthFactor: 1.2,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Handle button press
-                        },
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 70, vertical: 70), // Adjust padding
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Handle button press
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        child: const Text('تسجيلات',
-                            style: TextStyle(fontSize: 24)),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * 0.1,
+                          vertical: MediaQuery.of(context).size.height * 0.1,
+                        ),
                       ),
+                      child:
+                          const Text('تسجيلات', style: TextStyle(fontSize: 20)),
                     ),
                   ),
-                  Image.asset(
-                    'assets/image.png',
-                    width: 120,
-                    height: 150,
+                  const SizedBox(width: 20),
+                  Expanded(
+                    child: Image.asset(
+                      'assets/image.png',
+                      width: MediaQuery.of(context).size.width * 0.2,
+                      height: MediaQuery.of(context).size.height * 0.2,
+                    ),
                   ),
                 ],
               ),
@@ -186,35 +187,36 @@ class FriendlyDashboard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    'assets/image.png',
-                    width: 120,
-                    height: 150,
+                  Expanded(
+                    child: Image.asset(
+                      'assets/image.png',
+                      width: MediaQuery.of(context).size.width * 0.2,
+                      height: MediaQuery.of(context).size.height * 0.2,
+                    ),
                   ),
-                  ClipRect(
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      widthFactor: 1.2,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Handle button press
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const Excersise()),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
+                  const SizedBox(width: 20),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Handle button press
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Exercise(),
                           ),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 70, vertical: 70), // Adjust padding
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        child: const Text('التمرينات',
-                            style: TextStyle(fontSize: 24)),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * 0.1,
+                          vertical: MediaQuery.of(context).size.height * 0.1,
+                        ),
                       ),
+                      child: const Text('التمرينات',
+                          style: TextStyle(fontSize: 20)),
                     ),
                   ),
                 ],

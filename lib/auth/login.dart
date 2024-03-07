@@ -18,7 +18,7 @@ class login extends StatelessWidget {
     if (enteredUsername == validUsername && enteredPassword == validPassword) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => FriendlyDashboard()),
+        MaterialPageRoute(builder: (context) => const FriendlyDashboard()),
       );
     } else {
       showDialog(
@@ -113,15 +113,15 @@ class login extends StatelessWidget {
                   onPressed: () {
                     _authenticateUser(context);
                   },
-                  child: const Text(
-                    "تسجيل",
-                    style: TextStyle(fontSize: 20),
-                  ),
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18)),
+                    backgroundColor: const Color.fromARGB(255, 255, 174, 229),
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    primary: const Color.fromARGB(255, 255, 174, 229),
+                  ),
+                  child: const Text(
+                    "تسجيل",
+                    style: TextStyle(fontSize: 20),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -143,7 +143,7 @@ class login extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const signup()),
+                              builder: (context) => const Signup()),
                         );
                       },
                       child: const Text(

@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:speech_aid/auth/login.dart';
 import 'package:speech_aid/firebase_options.dart';
 import 'package:speech_aid/WelcomePage.dart';
 

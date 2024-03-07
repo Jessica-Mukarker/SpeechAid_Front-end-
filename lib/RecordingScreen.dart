@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -10,7 +12,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: RecordingScreen(),
+      home: const RecordingScreen(),
     );
   }
 }
@@ -59,7 +61,7 @@ class _RecordingScreenState extends State<RecordingScreen> {
 
   void _startCountdown() {
     print('Countdown started.');
-    const oneSec = const Duration(seconds: 1);
+    const oneSec = Duration(seconds: 1);
     setState(() {
       _countdown = 3;
     });

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'login.dart'; // Import the login class
 
-class signup extends StatelessWidget {
-  const signup({Key? key});
+class Signup extends StatelessWidget {
+  const Signup({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class signup extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 const SizedBox(height: 60.0),
-                Text(
+                const Text(
                   "اشترك معنا",
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -37,10 +37,10 @@ class signup extends StatelessWidget {
                 ),
                 const SizedBox(height: 40),
                 TextField(
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     hintText: "اسم المستخدم",
-                    hintStyle: TextStyle(color: Colors.white),
+                    hintStyle: const TextStyle(color: Colors.white),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(18),
                       borderSide: BorderSide.none,
@@ -52,10 +52,10 @@ class signup extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 TextField(
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     hintText: "البريد الالكتروني",
-                    hintStyle: TextStyle(color: Colors.white),
+                    hintStyle: const TextStyle(color: Colors.white),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(18),
                       borderSide: BorderSide.none,
@@ -67,10 +67,10 @@ class signup extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 TextField(
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     hintText: "كلمة السر",
-                    hintStyle: TextStyle(color: Colors.white),
+                    hintStyle: const TextStyle(color: Colors.white),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(18),
                       borderSide: BorderSide.none,
@@ -83,10 +83,10 @@ class signup extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 TextField(
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     hintText: "تاريخ الميلاد",
-                    hintStyle: TextStyle(color: Colors.white),
+                    hintStyle: const TextStyle(color: Colors.white),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(18),
                       borderSide: BorderSide.none,
@@ -100,21 +100,23 @@ class signup extends StatelessWidget {
                 const SizedBox(height: 40),
                 ElevatedButton(
                   onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18)),
+                    backgroundColor: const Color.fromARGB(255, 255, 174, 229),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                  ),
                   child: const Text(
                     "اشترك",
                     style: TextStyle(fontSize: 20),
                   ),
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18)),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    primary: const Color.fromARGB(255, 255, 174, 229),
-                  ),
                 ),
                 const SizedBox(height: 20),
-                const Text("أو",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white)),
+                const Text(
+                  "أو",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white),
+                ),
                 const SizedBox(height: 20),
                 TextButton(
                   onPressed: () {
@@ -124,16 +126,15 @@ class signup extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => login()),
                     );
                   },
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(
-                        'assets/google.jpg',
-                        height: 30,
-                        width: 30,
+                      CircleAvatar(
+                        backgroundImage: AssetImage('assets/google.jpg'),
+                        radius: 15,
                       ),
-                      const SizedBox(width: 12),
-                      const Text(
+                      SizedBox(width: 12),
+                      Text(
                         "تسجيل الدخول بواسطة جوجل",
                         style: TextStyle(
                           fontSize: 16,
@@ -147,8 +148,10 @@ class signup extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    const Text("لديك حساب مسبقا ؟",
-                        style: TextStyle(color: Colors.white)),
+                    const Text(
+                      "لديك حساب مسبقا ؟",
+                      style: TextStyle(color: Colors.white),
+                    ),
                     TextButton(
                       onPressed: () {
                         // Navigate to the login screen
@@ -164,7 +167,7 @@ class signup extends StatelessWidget {
                       ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),
