@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:speech_aid/alphabetic.dart';
+import 'package:speech_aid/Excersise.dart';
 
-class FriendlyDashboard extends StatelessWidget {
-  const FriendlyDashboard({Key? key}) : super(key: key);
+class Alphabetic extends StatelessWidget {
+  const Alphabetic({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('الصفحة الرئيسية'),
+        title: const Text('الاحرف العربية'),
         actions: [
           PopupMenuButton(
             icon: ClipOval(
@@ -136,92 +136,121 @@ class FriendlyDashboard extends StatelessWidget {
           ),
         ],
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Text(
-                'فلنبدا معا',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+      body: GridView.count(
+        crossAxisCount: 4, // 4 columns
+
+        padding: const EdgeInsets.all(10),
+        childAspectRatio: 0.6,
+        children: List.generate(28, (index) {
+          // Generate Arabic alphabet letters
+          String letter = _getArabicLetter(index);
+          return LettersCard(
+            title: letter,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Exercise()),
+              );
+            },
+          );
+        }),
+      ),
+    );
+  }
+
+  String _getArabicLetter(int index) {
+    switch (index) {
+      case 0:
+        return 'أ';
+      case 1:
+        return 'ب';
+      case 2:
+        return 'ت';
+      case 3:
+        return 'ث';
+      case 4:
+        return 'ج';
+      case 5:
+        return 'ح';
+      case 6:
+        return 'خ';
+      case 7:
+        return 'د';
+      case 8:
+        return 'ذ';
+      case 9:
+        return 'ر';
+      case 10:
+        return 'ز';
+      case 11:
+        return 'س';
+      case 12:
+        return 'ش';
+      case 13:
+        return 'ص';
+      case 14:
+        return 'ض';
+      case 15:
+        return 'ط';
+      case 16:
+        return 'ظ';
+      case 17:
+        return 'ع';
+      case 18:
+        return 'غ';
+      case 19:
+        return 'ف';
+      case 20:
+        return 'ق';
+      case 21:
+        return 'ك';
+      case 22:
+        return 'ل';
+      case 23:
+        return 'م';
+      case 24:
+        return 'ن';
+      case 25:
+        return 'ه';
+      case 26:
+        return 'و';
+      case 27:
+        return 'ي';
+      default:
+        return '';
+    }
+  }
+}
+
+class LettersCard extends StatelessWidget {
+  final String title;
+  final VoidCallback onTap;
+
+  const LettersCard({
+    required this.title,
+    required this.onTap,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: SizedBox(
+        width: 40, // Adjust the width as needed
+        height: 30, // Adjust the height as needed
+        child: Card(
+          elevation: 4,
+          color: const Color(0xFFFFBBDB),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          child: Center(
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontSize: 40, // Adjust the font size as needed
+                fontWeight: FontWeight.bold,
               ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Handle button press
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width * 0.1,
-                          vertical: MediaQuery.of(context).size.height * 0.1,
-                        ),
-                      ),
-                      child:
-                          const Text('تسجيلات', style: TextStyle(fontSize: 20)),
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: Image.asset(
-                      'assets/image.png',
-                      width: MediaQuery.of(context).size.width * 0.2,
-                      height: MediaQuery.of(context).size.height * 0.2,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Image.asset(
-                      'assets/image.png',
-                      width: MediaQuery.of(context).size.width * 0.2,
-                      height: MediaQuery.of(context).size.height * 0.2,
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Handle button press
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const Alphabetic(),
-                          ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width * 0.1,
-                          vertical: MediaQuery.of(context).size.height * 0.1,
-                        ),
-                      ),
-                      child: const Text('التمرينات',
-                          style: TextStyle(fontSize: 20)),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+            ),
           ),
         ),
       ),
