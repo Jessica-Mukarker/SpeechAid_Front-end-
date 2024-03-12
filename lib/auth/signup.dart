@@ -1,8 +1,33 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'firebase_aut/firebase_auth_service.dart';
 import 'login.dart'; // Import the login class
 
-class Signup extends StatelessWidget {
-  const Signup({Key? key}) : super(key: key);
+class signup extends StatefulWidget {
+  const signup({Key? key});
+
+  @override
+  State<signup> createState() => _signupState();
+}
+
+class _signupState extends State<signup> {
+final FirebaseAuthService _auth = FirebaseAuthService();
+
+  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _dateOfBirthController = TextEditingController();
+
+  bool isSigningUp = false;
+
+@override
+  void dispose() {
+    _usernameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _dateOfBirthController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +124,24 @@ class Signup extends StatelessWidget {
                 ),
                 const SizedBox(height: 40),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    try {
+                      final credential = await FirebaseAuth.instance
+                          .createUserWithEmailAndPassword(
+                        email: _emailController.text,
+                        password: _passwordController.text,
+                      );
+                      Navigator.pushReplacementNamed(context, "dashboard");
+                    } on FirebaseAuthException catch (e) {
+                      if (e.code == 'weak-password') {
+                        print('The password provided is too weak.');
+                      } else if (e.code == 'email-already-in-use') {
+                        print('The account already exists for that email.');
+                      }
+                    } catch (e) {
+                      print(e);
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18)),

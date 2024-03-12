@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -261,15 +261,7 @@ class _RecordingScreenState extends State<RecordingScreen> {
                       flex: 1,
                       child: Container(
                         color: Colors.grey, // Placeholder color
-                        child: const Center(
-                          child: Text(
-                            'Your video widget here',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
+                        child: _buildCameraWidgetWithCountdown(),
                       ),
                     ),
                     Expanded(
@@ -289,15 +281,7 @@ class _RecordingScreenState extends State<RecordingScreen> {
                       flex: 1,
                       child: Container(
                         color: Colors.grey, // Placeholder color
-                        child: const Center(
-                          child: Text(
-                            'Your video widget here',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
+                        child: _buildCameraWidgetWithCountdown(),
                       ),
                     ),
                     Expanded(
@@ -312,6 +296,34 @@ class _RecordingScreenState extends State<RecordingScreen> {
             },
           )
         : Container(); // Return an empty container if controller is null or not initialized
+  }
+
+  Widget _buildCameraWidgetWithCountdown() {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        const Center(
+          child: Text(
+            'Your video widget here',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Visibility(
+          visible: _countdown > 0,
+          child: Text(
+            _countdown == 0 ? 'Start Recording' : _countdown.toString(),
+            style: TextStyle(
+              fontSize: 72,
+              color: _countdown == 0 ? Colors.orange : const Color(0xFF52A0AA),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   Widget _buildVideoSection() {
@@ -343,19 +355,13 @@ class _RecordingScreenState extends State<RecordingScreen> {
                       visible: _countdown > 0,
                       child: Text(
                         _countdown == 0
-                            ? 'ابدأ التسجيل'
-                            : _countdown == 1
-                                ? '1'
-                                : _countdown.toString(),
+                            ? 'Start Recording'
+                            : _countdown.toString(),
                         style: TextStyle(
                           fontSize: 72,
                           color: _countdown == 0
-                              ? Colors.purple
-                              : _countdown == 1
-                                  ? const Color.fromARGB(255, 241, 46, 32)
-                                  : _countdown == 2
-                                      ? const Color.fromARGB(255, 255, 174, 229)
-                                      : const Color(0xFF528FAA),
+                              ? Colors.orange
+                              : const Color(0xFF52A0AA),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -397,19 +403,13 @@ class _RecordingScreenState extends State<RecordingScreen> {
                       visible: _countdown > 0,
                       child: Text(
                         _countdown == 0
-                            ? 'ابدأ التسجيل'
-                            : _countdown == 1
-                                ? '1'
-                                : _countdown.toString(),
+                            ? 'Start Recording'
+                            : _countdown.toString(),
                         style: TextStyle(
                           fontSize: 72,
                           color: _countdown == 0
-                              ? Colors.purple
-                              : _countdown == 1
-                                  ? const Color.fromARGB(255, 241, 46, 32)
-                                  : _countdown == 2
-                                      ? const Color.fromARGB(255, 255, 174, 229)
-                                      : const Color(0xFF528FAA),
+                              ? Colors.orange
+                              : const Color(0xFF52A0AA),
                           fontWeight: FontWeight.bold,
                         ),
                       ),

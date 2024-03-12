@@ -237,7 +237,7 @@ class LettersCard extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: SizedBox(
-        width: 40, // Adjust the width as needed
+        width: 30, // Adjust the width as needed
         height: 30, // Adjust the height as needed
         child: Card(
           elevation: 4,

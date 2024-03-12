@@ -1,9 +1,11 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:speech_aid/friendlyDashboard.dart';
 import 'signup.dart'; // Import the signup class
 
 class login extends StatelessWidget {
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final String validUsername = 'jess';
   final String validPassword = 'jess';
@@ -12,7 +14,7 @@ class login extends StatelessWidget {
   login({Key? key, this.role}) : super(key: key);
 
   void _authenticateUser(BuildContext context) {
-    String enteredUsername = _usernameController.text.trim();
+    String enteredUsername = _emailController.text.trim();
     String enteredPassword = _passwordController.text.trim();
 
     if (enteredUsername == validUsername && enteredPassword == validPassword) {
@@ -77,7 +79,7 @@ class login extends StatelessWidget {
                 ),
                 const SizedBox(height: 40),
                 TextField(
-                  controller: _usernameController,
+                  controller: _emailController,
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     hintText: "اسم المستخدم",
@@ -110,8 +112,46 @@ class login extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () {
-                    _authenticateUser(context);
+                  onPressed: () async {
+                    try {
+                      final credential = await FirebaseAuth.instance
+                          .signInWithEmailAndPassword(
+                              email: _emailController.text,
+                              password: _passwordController.text);
+                      Navigator.pushReplacementNamed(context, "dashboard");
+                    } on FirebaseAuthException catch (e) {
+                      if (e.code == 'user-not-found') {
+                        AwesomeDialog(
+                          context: context,
+                          dialogType: DialogType.error,
+                          //borderSide: BorderSide(color: Colors.green, width: 2),
+                          //buttonsBorderRadius: BorderRadius.all(Radius.circular(2)),
+                          // headerAnimationLoop: false,
+                          animType: AnimType.rightSlide,
+                          title: 'Error',
+                          desc: 'No user found for that email.',
+                          //showCloseIcon: true,
+                          // btnCancelOnPress: () {},
+                          //btnOkOnPress: () {},
+                        ).show();
+                        print('No user found for that email.');
+                      } else if (e.code == 'wrong-password') {
+                        AwesomeDialog(
+                          context: context,
+                          dialogType: DialogType.error,
+                          //borderSide: BorderSide(color: Colors.green, width: 2),
+                          //buttonsBorderRadius: BorderRadius.all(Radius.circular(2)),
+                          //headerAnimationLoop: false,
+                          animType: AnimType.rightSlide,
+                          title: 'Error',
+                          desc: 'Wrong password provided for that user.',
+                          //showCloseIcon: true,
+                          //btnCancelOnPress: () {},
+                          //btnOkOnPress: () {},
+                        ).show();
+                        print('Wrong password provided for that user.');
+                      }
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -143,7 +183,7 @@ class login extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const Signup()),
+                              builder: (context) => const signup()),
                         );
                       },
                       child: const Text(
