@@ -125,10 +125,11 @@ class Exercise extends StatelessWidget {
                 ),
               ];
             },
-            onSelected: (value) {
+          onSelected: (value) {
               if (value == 'Log Out') {
                 Navigator.pop(context); // Close the menu
-                Navigator.pop(context); // Go back to the previous screen
+               Navigator.popUntil(context, ModalRoute.withName('/')); // Go back to the root page
+               Navigator.pushReplacementNamed(context, '/login'); // Navigate to the login page
               } else {
                 // Handle other menu options
               }

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:speech_aid/auth/login.dart';
 import 'package:speech_aid/firebase_options.dart';
 import 'package:speech_aid/WelcomePage.dart';
-
 import 'auth/signup.dart';
 import 'friendlyDashboard.dart';
 

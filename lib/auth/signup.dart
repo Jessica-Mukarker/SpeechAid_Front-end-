@@ -11,7 +11,7 @@ class signup extends StatefulWidget {
 }
 
 class _signupState extends State<signup> {
-final FirebaseAuthService _auth = FirebaseAuthService();
+  final FirebaseAuthService _auth = FirebaseAuthService();
 
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
@@ -20,7 +20,7 @@ final FirebaseAuthService _auth = FirebaseAuthService();
 
   bool isSigningUp = false;
 
-@override
+  @override
   void dispose() {
     _usernameController.dispose();
     _emailController.dispose();
