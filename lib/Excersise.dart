@@ -10,7 +10,7 @@ class Exercise extends StatelessWidget {
       appBar: AppBar(
         title: const Text('صفحة التمرينات'),
         actions: [
-         PopupMenuButton(
+          PopupMenuButton(
             icon: ClipOval(
               child: Image.asset(
                 'assets/logo.png',
@@ -125,11 +125,13 @@ class Exercise extends StatelessWidget {
                 ),
               ];
             },
-          onSelected: (value) {
+            onSelected: (value) {
               if (value == 'Log Out') {
                 Navigator.pop(context); // Close the menu
-               Navigator.popUntil(context, ModalRoute.withName('/')); // Go back to the root page
-               Navigator.pushReplacementNamed(context, '/login'); // Navigate to the login page
+                Navigator.popUntil(context,
+                    ModalRoute.withName('/')); // Go back to the root page
+                Navigator.pushReplacementNamed(
+                    context, '/login'); // Navigate to the login page
               } else {
                 // Handle other menu options
               }
@@ -139,46 +141,68 @@ class Exercise extends StatelessWidget {
       ),
       body: GridView.count(
         crossAxisCount: 2,
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(30), // Adjust the padding to add spaces
+        mainAxisSpacing: 30, // Add vertical space between the buttons
+        crossAxisSpacing: 30, // Add horizontal space between the buttons
         childAspectRatio: 1.5,
         children: [
           KidActivityCard(
             title: 'المقاطع القصيرة',
-            icon: Icons.brush,
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const RecordingScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const RecordingScreen()),
               );
             },
           ),
           KidActivityCard(
             title: 'المقاطع الطويلة',
-            icon: Icons.mic,
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const RecordingScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const RecordingScreen()),
               );
             },
           ),
           KidActivityCard(
-            title: 'كلمات',
-            icon: Icons.book,
+            title: 'مقاطع ساكنة',
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const RecordingScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const RecordingScreen()),
               );
             },
           ),
           KidActivityCard(
-            title: 'الأحرف',
-            icon: Icons.book,
+            title: ' اول الكلمة',
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const RecordingScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const RecordingScreen()),
+              );
+            },
+          ),
+          KidActivityCard(
+            title: 'وسط الكلمة',
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const RecordingScreen()),
+              );
+            },
+          ),
+          KidActivityCard(
+            title: 'اخر الكلمة',
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const RecordingScreen()),
               );
             },
           ),
@@ -191,12 +215,11 @@ class Exercise extends StatelessWidget {
 
 class KidActivityCard extends StatelessWidget {
   final String title;
-  final IconData icon;
+
   final VoidCallback onTap;
 
   const KidActivityCard({
     required this.title,
-    required this.icon,
     required this.onTap,
     Key? key,
   }) : super(key: key);
@@ -211,7 +234,6 @@ class KidActivityCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 50),
             const SizedBox(height: 8),
             Text(
               title,

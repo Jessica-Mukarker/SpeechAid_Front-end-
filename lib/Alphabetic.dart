@@ -127,9 +127,11 @@ class Alphabetic extends StatelessWidget {
             },
             onSelected: (value) {
               if (value == 'Log Out') {
-               Navigator.pop(context); // Close the menu
-               Navigator.popUntil(context, ModalRoute.withName('/')); // Go back to the root page
-               Navigator.pushReplacementNamed(context, '/login'); // Navigate to the login page
+                Navigator.pop(context); // Close the menu
+                Navigator.popUntil(context,
+                    ModalRoute.withName('/')); // Go back to the root page
+                Navigator.pushReplacementNamed(
+                    context, '/login'); // Navigate to the login page
               } else {
                 // Handle other menu options
               }
@@ -139,8 +141,10 @@ class Alphabetic extends StatelessWidget {
       ),
       body: GridView.count(
         crossAxisCount: 4, // 4 columns
+        padding: EdgeInsets.all(10), // Adjust the padding to add spaces
+        mainAxisSpacing: 10, // Add vertical space between the buttons
+        crossAxisSpacing: 10,
 
-        padding: const EdgeInsets.all(10),
         childAspectRatio: 0.6,
         children: List.generate(28, (index) {
           // Generate Arabic alphabet letters

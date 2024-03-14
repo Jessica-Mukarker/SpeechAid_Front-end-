@@ -39,16 +39,35 @@ class _RecordingScreenState extends State<RecordingScreen> {
 
   Future<void> _initializeCamera() async {
     final cameras = await availableCameras();
-    final camera = cameras.first;
+    CameraDescription? selectedCamera;
 
-    _controller = CameraController(
-      camera,
-      ResolutionPreset.medium,
-    );
+    // Try initializing with the front camera
+    for (final camera in cameras) {
+      if (camera.lensDirection == CameraLensDirection.front) {
+        selectedCamera = camera;
+        break;
+      }
+    }
 
-    await _controller!.initialize();
-    if (!mounted) return;
-    setState(() {});
+    // If front camera not available, use the back camera
+    if (selectedCamera == null && cameras.isNotEmpty) {
+      selectedCamera = cameras.first;
+    }
+
+    // If a camera is found, initialize the controller
+    if (selectedCamera != null) {
+      _controller = CameraController(
+        selectedCamera,
+        ResolutionPreset.medium,
+      );
+
+      await _controller!.initialize();
+      if (!mounted) return;
+      setState(() {});
+    } else {
+      // Handle case when no camera is available
+      print('No camera available');
+    }
   }
 
   void _startRecording() {
