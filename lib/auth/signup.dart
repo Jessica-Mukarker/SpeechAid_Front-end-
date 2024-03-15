@@ -1,6 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'firebase_aut/firebase_auth_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'login.dart'; // Import the login class
 
 class signup extends StatefulWidget {
@@ -11,7 +10,7 @@ class signup extends StatefulWidget {
 }
 
 class _signupState extends State<signup> {
-  final FirebaseAuthService _auth = FirebaseAuthService();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
@@ -53,6 +52,12 @@ class _signupState extends State<signup> {
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
+                ),
+                const SizedBox(height: 20),
+                Image.asset(
+                  'assets/image.png',
+                  width: 150, // Adjust the size of the icon
+                  height: 150,
                 ),
                 const SizedBox(height: 20),
                 Text(
@@ -119,39 +124,66 @@ class _signupState extends State<signup> {
                     filled: true,
                     fillColor: Colors.white.withOpacity(0.2),
                     prefixIcon:
-                        const Icon(Icons.calendar_month, color: Colors.white),
+                        const Icon(Icons.calendar_today, color: Colors.white),
                   ),
                 ),
                 const SizedBox(height: 40),
-                ElevatedButton(
-                  onPressed: () async {
-                    try {
-                      final credential = await FirebaseAuth.instance
-                          .createUserWithEmailAndPassword(
-                        email: _emailController.text,
-                        password: _passwordController.text,
-                      );
-                      Navigator.pushReplacementNamed(context, "dashboard");
-                    } on FirebaseAuthException catch (e) {
-                      if (e.code == 'weak-password') {
-                        print('The password provided is too weak.');
-                      } else if (e.code == 'email-already-in-use') {
-                        print('The account already exists for that email.');
-                      }
-                    } catch (e) {
-                      print(e);
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18)),
-                    backgroundColor: const Color.fromARGB(255, 255, 174, 229),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                  child: const Text(
-                    "اشترك",
-                    style: TextStyle(fontSize: 20),
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        // Handle specialist sign-up
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18)),
+                        backgroundColor:
+                            const Color.fromARGB(255, 255, 174, 229),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 24), // Adjust padding
+                      ),
+                      child: const Text(
+                        "اشترك كاخصائي",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        try {
+                          final credential =
+                              await _auth.createUserWithEmailAndPassword(
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                          );
+                          if (credential != null) {
+                            Navigator.pushReplacementNamed(
+                                context, "friendlyDashboard");
+                          }
+                        } on FirebaseAuthException catch (e) {
+                          if (e.code == 'weak-password') {
+                            print('The password provided is too weak.');
+                          } else if (e.code == 'email-already-in-use') {
+                            print('The account already exists for that email.');
+                          }
+                        } catch (e) {
+                          print(e);
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18)),
+                        backgroundColor:
+                            const Color.fromARGB(255, 255, 174, 229),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 24), // Adjust padding
+                      ),
+                      child: const Text(
+                        "اشترك كمريض",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 20),
                 const Text(

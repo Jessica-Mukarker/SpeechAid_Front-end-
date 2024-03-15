@@ -45,12 +45,12 @@ class _MyAppState extends State<MyApp> {
             const Color(0xFF528FAA), // Background color for the whole app
       ),
       home: FirebaseAuth.instance.currentUser == null
-          ? WelcomePage()
-          : WelcomePage(),
+          ? const WelcomePage()
+          : const WelcomePage(),
       routes: {
-        "signup": (context) => signup(),
+        "signup": (context) => const signup(),
         'login': (context) => login(),
-        'dashboard': (context) => FriendlyDashboard()
+        'dashboard': (context) => const FriendlyDashboard()
       },
     );
   }

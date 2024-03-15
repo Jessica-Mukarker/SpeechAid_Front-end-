@@ -8,7 +8,7 @@ class Exercise extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('صفحة التمرينات'),
+        title: const Text('الصفحة التمرينات'),
         actions: [
           PopupMenuButton(
             icon: ClipOval(
@@ -139,83 +139,92 @@ class Exercise extends StatelessWidget {
           ),
         ],
       ),
-      body: GridView.count(
-        crossAxisCount: 2,
-        padding: EdgeInsets.all(30), // Adjust the padding to add spaces
-        mainAxisSpacing: 30, // Add vertical space between the buttons
-        crossAxisSpacing: 30, // Add horizontal space between the buttons
-        childAspectRatio: 1.5,
+      body: Column(
         children: [
-          KidActivityCard(
-            title: 'المقاطع القصيرة',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const RecordingScreen()),
-              );
-            },
+          // Image added here
+          Image.asset(
+            'assets/image.png',
           ),
-          KidActivityCard(
-            title: 'المقاطع الطويلة',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const RecordingScreen()),
-              );
-            },
+          Expanded(
+            child: GridView.count(
+              crossAxisCount: 2,
+              padding: EdgeInsets.all(30), // Adjust the padding to add spaces
+              mainAxisSpacing: 30, // Add vertical space between the buttons
+              crossAxisSpacing: 30, // Add horizontal space between the buttons
+              childAspectRatio: 1.5,
+              children: [
+                KidActivityCard(
+                  title: 'المقاطع القصيرة',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const RecordingScreen()),
+                    );
+                  },
+                ),
+                KidActivityCard(
+                  title: 'المقاطع الطويلة',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const RecordingScreen()),
+                    );
+                  },
+                ),
+                KidActivityCard(
+                  title: 'مقاطع ساكنة',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const RecordingScreen()),
+                    );
+                  },
+                ),
+                KidActivityCard(
+                  title: ' اول الكلمة',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const RecordingScreen()),
+                    );
+                  },
+                ),
+                KidActivityCard(
+                  title: 'وسط الكلمة',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const RecordingScreen()),
+                    );
+                  },
+                ),
+                KidActivityCard(
+                  title: 'اخر الكلمة',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const RecordingScreen()),
+                    );
+                  },
+                ),
+                // Add more activity cards as needed
+              ],
+            ),
           ),
-          KidActivityCard(
-            title: 'مقاطع ساكنة',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const RecordingScreen()),
-              );
-            },
-          ),
-          KidActivityCard(
-            title: ' اول الكلمة',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const RecordingScreen()),
-              );
-            },
-          ),
-          KidActivityCard(
-            title: 'وسط الكلمة',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const RecordingScreen()),
-              );
-            },
-          ),
-          KidActivityCard(
-            title: 'اخر الكلمة',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const RecordingScreen()),
-              );
-            },
-          ),
-          // Add more activity cards as needed
         ],
       ),
     );
   }
 }
 
-class KidActivityCard extends StatelessWidget {
+class KidActivityCard extends StatefulWidget {
   final String title;
-
   final VoidCallback onTap;
 
   const KidActivityCard({
@@ -225,24 +234,46 @@ class KidActivityCard extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _KidActivityCardState createState() => _KidActivityCardState();
+}
+
+class _KidActivityCardState extends State<KidActivityCard> {
+  bool _pressed = false;
+
+  @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
+    return GestureDetector(
+      onTapDown: (_) {
+        setState(() {
+          _pressed = true;
+        });
+      },
+      onTapUp: (_) {
+        setState(() {
+          _pressed = false;
+        });
+        widget.onTap();
+      },
+      onTapCancel: () {
+        setState(() {
+          _pressed = false;
+        });
+      },
       child: Card(
+        color: _pressed ? Color(0xFFFFBBDB) : Colors.white,
         elevation: 4,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(height: 8),
-            Text(
-              title,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              widget.title,
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

@@ -141,10 +141,9 @@ class Alphabetic extends StatelessWidget {
       ),
       body: GridView.count(
         crossAxisCount: 4, // 4 columns
-        padding: EdgeInsets.all(10), // Adjust the padding to add spaces
+        padding: const EdgeInsets.all(10), // Adjust the padding to add spaces
         mainAxisSpacing: 10, // Add vertical space between the buttons
         crossAxisSpacing: 10,
-
         childAspectRatio: 0.6,
         children: List.generate(28, (index) {
           // Generate Arabic alphabet letters
@@ -227,7 +226,7 @@ class Alphabetic extends StatelessWidget {
   }
 }
 
-class LettersCard extends StatelessWidget {
+class LettersCard extends StatefulWidget {
   final String title;
   final VoidCallback onTap;
 
@@ -238,23 +237,53 @@ class LettersCard extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _LettersCardState createState() => _LettersCardState();
+}
+
+class _LettersCardState extends State<LettersCard> {
+  bool _pressed = false;
+
+  @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: SizedBox(
-        width: 30, // Adjust the width as needed
-        height: 30, // Adjust the height as needed
-        child: Card(
-          elevation: 4,
-          color: const Color(0xFFFFBBDB),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          child: Center(
-            child: Text(
-              title,
-              style: const TextStyle(
-                fontSize: 40, // Adjust the font size as needed
-                fontWeight: FontWeight.bold,
-              ),
+    return GestureDetector(
+      onTapDown: (_) {
+        setState(() {
+          _pressed = true;
+        });
+      },
+      onTapUp: (_) {
+        setState(() {
+          _pressed = false;
+        });
+        widget.onTap();
+      },
+      onTapCancel: () {
+        setState(() {
+          _pressed = false;
+        });
+      },
+      child: Container(
+        width: 80, // Specify the width
+        height: 80, // Specify the height
+        decoration: BoxDecoration(
+          color: _pressed ? const Color(0xFFFFBBDB) : Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: _pressed
+                  ? const Color(0xFFFFBBDB).withOpacity(0.5)
+                  : Colors.transparent,
+              blurRadius: 4,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Center(
+          child: Text(
+            widget.title,
+            style: const TextStyle(
+              fontSize: 30, // Adjust the font size as needed
+              fontWeight: FontWeight.bold,
             ),
           ),
         ),
