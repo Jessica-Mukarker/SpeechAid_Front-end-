@@ -129,58 +129,44 @@ class _signupState extends State<signup> {
                 ),
                 const SizedBox(height: 40),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        // Handle specialist sign-up
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18)),
-                        backgroundColor:
-                            const Color.fromARGB(255, 255, 174, 229),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 12, horizontal: 24), // Adjust padding
-                      ),
-                      child: const Text(
-                        "اشترك كاخصائي",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () async {
-                        try {
-                          final credential =
-                              await _auth.createUserWithEmailAndPassword(
-                            email: _emailController.text,
-                            password: _passwordController.text,
-                          );
-                          if (credential != null) {
-                            Navigator.pushReplacementNamed(
-                                context, "friendlyDashboard");
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          try {
+                            final credential =
+                                await _auth.createUserWithEmailAndPassword(
+                              email: _emailController.text,
+                              password: _passwordController.text,
+                            );
+                            if (credential != null) {
+                              Navigator.pushReplacementNamed(
+                                  context, "friendlyDashboard");
+                            }
+                          } on FirebaseAuthException catch (e) {
+                            if (e.code == 'weak-password') {
+                              print('The password provided is too weak.');
+                            } else if (e.code == 'email-already-in-use') {
+                              print(
+                                  'The account already exists for that email.');
+                            }
+                          } catch (e) {
+                            print(e);
                           }
-                        } on FirebaseAuthException catch (e) {
-                          if (e.code == 'weak-password') {
-                            print('The password provided is too weak.');
-                          } else if (e.code == 'email-already-in-use') {
-                            print('The account already exists for that email.');
-                          }
-                        } catch (e) {
-                          print(e);
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18)),
-                        backgroundColor:
-                            const Color.fromARGB(255, 255, 174, 229),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 12, horizontal: 24), // Adjust padding
-                      ),
-                      child: const Text(
-                        "اشترك كمريض",
-                        style: TextStyle(fontSize: 16),
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18)),
+                          backgroundColor:
+                              const Color.fromARGB(255, 255, 174, 229),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 16, horizontal: 24), // Adjust padding
+                        ),
+                        child: const Text(
+                          "اشترك",
+                          style: TextStyle(fontSize: 16),
+                        ),
                       ),
                     ),
                   ],
