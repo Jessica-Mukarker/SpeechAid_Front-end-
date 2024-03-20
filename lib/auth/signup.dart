@@ -18,6 +18,7 @@ class _signupState extends State<signup> {
   TextEditingController _dateOfBirthController = TextEditingController();
 
   bool isSigningUp = false;
+  String? _selectedItem;
 
   @override
   void dispose() {
@@ -127,6 +128,47 @@ class _signupState extends State<signup> {
                         const Icon(Icons.calendar_today, color: Colors.white),
                   ),
                 ),
+                const SizedBox(height: 20),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(18),
+                    color: Colors.white.withOpacity(0.2),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      dropdownColor: Color(0xFF75A5BB),
+                      isExpanded: true,
+                      hint: const Row(
+                        children: [
+                          Icon(Icons.arrow_drop_down, color: Colors.white),
+                          SizedBox(width: 8),
+                          Text(
+                            "هل انت",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                      value: _selectedItem,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedItem = newValue;
+                        });
+                      },
+                      items: <String>['الاخصائي', 'المريض']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: const TextStyle(
+                                color: Color.fromARGB(255, 255, 255, 255)),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -171,39 +213,7 @@ class _signupState extends State<signup> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
-                const Text(
-                  "أو",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white),
-                ),
-                const SizedBox(height: 20),
-                TextButton(
-                  onPressed: () {
-                    // Navigate to the login screen
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => login()),
-                    );
-                  },
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CircleAvatar(
-                        backgroundImage: AssetImage('assets/google.jpg'),
-                        radius: 15,
-                      ),
-                      SizedBox(width: 12),
-                      Text(
-                        "تسجيل الدخول بواسطة جوجل",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Color.fromARGB(255, 255, 174, 229),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                
                 const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

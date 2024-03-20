@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:speech_aid/auth/login.dart';
 import 'package:speech_aid/firebase_options.dart';
 import 'package:speech_aid/WelcomePage.dart';
+import 'package:speech_aid/therapistDashbored.dart';
 import 'auth/signup.dart';
 import 'friendlyDashboard.dart';
 
@@ -45,8 +46,8 @@ class _MyAppState extends State<MyApp> {
             const Color(0xFF528FAA), // Background color for the whole app
       ),
       home: FirebaseAuth.instance.currentUser == null
-          ? const WelcomePage()
-          : const WelcomePage(),
+          ? WelcomePage()
+          : WelcomePage(),
       routes: {
         "signup": (context) => const signup(),
         'login': (context) => login(),
