@@ -213,7 +213,39 @@ class _signupState extends State<signup> {
                     ),
                   ],
                 ),
-                
+                const SizedBox(height: 20),
+                const Text(
+                  "أو",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white),
+                ),
+                const SizedBox(height: 5),
+                TextButton(
+                  onPressed: () {
+                    // Navigate to the login screen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => login()),
+                    );
+                  },
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: AssetImage('assets/google.jpg'),
+                        radius: 15,
+                      ),
+                      SizedBox(width: 12),
+                      Text(
+                        "اشترك بواسطة جوجل",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Color.fromARGB(255, 255, 174, 229),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
