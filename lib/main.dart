@@ -51,7 +51,7 @@ class _MyAppState extends State<MyApp> {
       routes: {
         "signup": (context) => const signup(),
         'login': (context) => login(),
-        'dashboard': (context) => const FriendlyDashboard()
+        'dashboard': (context) =>  FriendlyDashboard()
       },
     );
   }

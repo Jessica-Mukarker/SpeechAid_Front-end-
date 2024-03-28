@@ -1,8 +1,9 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:speech_aid/friendlyDashboard.dart';
-import 'signup.dart'; // Import the signup class
+import 'signup.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class login extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -13,6 +14,35 @@ class login extends StatelessWidget {
 
   login({Key? key, this.role}) : super(key: key);
 
+  Future<void> signInWithGoogle(BuildContext context) async {
+    try {
+      // Trigger the authentication flow
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+//////
+      print('Google user: $googleUser');
+      print('Google auth: $googleAuth');
+      //////////
+
+      // Create a new credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      // Once signed in, return the UserCredential
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil("dashboard", (route) => false);
+    } catch (e) {
+      print('Google Sign-In Error: $e');
+      // Handle Google Sign-In errors here
+    }
+  }
+
   void _authenticateUser(BuildContext context) {
     String enteredUsername = _emailController.text.trim();
     String enteredPassword = _passwordController.text.trim();
@@ -20,7 +50,7 @@ class login extends StatelessWidget {
     if (enteredUsername == validUsername && enteredPassword == validPassword) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const FriendlyDashboard()),
+        MaterialPageRoute(builder: (context) =>  FriendlyDashboard()),
       );
     } else {
       showDialog(
@@ -174,10 +204,7 @@ class login extends StatelessWidget {
                 TextButton(
                   onPressed: () {
                     // Navigate to the login screen
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => login()),
-                    );
+                    signInWithGoogle(context); // Pass the context here
                   },
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -216,7 +243,8 @@ class login extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const signup()),
+                              builder: (context) =>
+                                  const signup()), // Corrected class name
                         );
                       },
                       child: const Text(

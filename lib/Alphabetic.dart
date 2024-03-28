@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:speech_aid/CustomAppBar.dart';
 import 'package:speech_aid/Excersise.dart';
 
 class Alphabetic extends StatelessWidget {
@@ -7,138 +8,14 @@ class Alphabetic extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomAppBar(
         title: const Text('الاحرف العربية'),
-        actions: [
-          PopupMenuButton(
-            icon: ClipOval(
-              child: Image.asset(
-                'assets/logo.png',
-                width: 40, // Adjust the width and height as needed
-                height: 40,
-                fit: BoxFit.cover,
-              ),
-            ),
-            itemBuilder: (BuildContext context) {
-              return <PopupMenuEntry>[
-                const PopupMenuItem(
-                  value: 'Profile',
-                  height: 40,
-                  child: Row(
-                    children: [
-                      Icon(Icons.person, color: Colors.black, size: 24),
-                      SizedBox(width: 5),
-                      Text(
-                        'الحساب الشخصي',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const PopupMenuItem(
-                  value: 'Recordings',
-                  height: 40,
-                  child: Row(
-                    children: [
-                      Icon(Icons.mic, color: Colors.black, size: 24),
-                      SizedBox(width: 5),
-                      Text(
-                        'صفحة التسجيلات',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const PopupMenuItem(
-                  value: 'History',
-                  height: 40,
-                  child: Row(
-                    children: [
-                      Icon(Icons.history, color: Colors.black, size: 24),
-                      SizedBox(width: 5),
-                      Text(
-                        'تاريخ التسجيلات',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const PopupMenuItem(
-                  value: 'Therapist Hospital',
-                  height: 40,
-                  child: Row(
-                    children: [
-                      Icon(Icons.local_hospital, color: Colors.black, size: 24),
-                      SizedBox(width: 5),
-                      Text(
-                        'موقع العيادة',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const PopupMenuItem(
-                  value: 'Therapist Info',
-                  height: 40,
-                  child: Row(
-                    children: [
-                      Icon(Icons.info, color: Colors.black, size: 24),
-                      SizedBox(width: 5),
-                      Text(
-                        'معلومات المعالج',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const PopupMenuItem(
-                  value: 'Log Out',
-                  height: 40,
-                  child: Row(
-                    children: [
-                      Icon(Icons.logout, color: Colors.black, size: 24),
-                      SizedBox(width: 5),
-                      Text(
-                        'تسجيل الخروج',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ];
-            },
-            onSelected: (value) {
-              if (value == 'Log Out') {
-                Navigator.pop(context); // Close the menu
-                Navigator.popUntil(context,
-                    ModalRoute.withName('/')); // Go back to the root page
-                Navigator.pushReplacementNamed(
-                    context, '/login'); // Navigate to the login page
-              } else {
-                // Handle other menu options
-              }
-            },
-          ),
-        ],
+        notificationCount: 0, // Set notificationCount to 0 initially
+        onMenuItemSelected: (String value) {
+          // Handle menu item selection here
+        }, 
       ),
+      
       body: GridView.count(
         crossAxisCount: 4, // 4 columns
         padding: const EdgeInsets.all(10), // Adjust the padding to add spaces
