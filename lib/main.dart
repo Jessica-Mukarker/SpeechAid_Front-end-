@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:speech_aid/auth/login.dart';
 import 'package:speech_aid/firebase_options.dart';
 import 'package:speech_aid/WelcomePage.dart';
-import 'package:speech_aid/therapistDashbored.dart';
+
 import 'auth/signup.dart';
 import 'friendlyDashboard.dart';
+import 'therapist/therapistDashbored.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,8 +47,8 @@ class _MyAppState extends State<MyApp> {
             const Color(0xFF528FAA), // Background color for the whole app
       ),
       home: FirebaseAuth.instance.currentUser == null
-          ? WelcomePage()
-          : WelcomePage(),
+          ? therapistDashboard()
+          : therapistDashboard(),
       routes: {
         "signup": (context) => const signup(),
         'login': (context) => login(),

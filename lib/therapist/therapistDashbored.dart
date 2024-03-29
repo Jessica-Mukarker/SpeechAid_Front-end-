@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'AppointmentsPage.dart';
+import 'VideosPage.dart';
 
 class therapistDashboard extends StatelessWidget {
   @override
@@ -18,7 +20,7 @@ class therapistDashboard extends StatelessWidget {
       body: SingleChildScrollView(
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.all(20.0), // Padding around the buttons
+            padding: const EdgeInsets.all(20.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -43,10 +45,7 @@ class therapistDashboard extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width * 0.1,
-                          vertical: MediaQuery.of(context).size.height * 0.1,
-                        ),
+                        padding: const EdgeInsets.all(20), // Adjust the padding
                         minimumSize: const Size(double.infinity, 60),
                         // Set button height
                       ),
@@ -64,57 +63,58 @@ class therapistDashboard extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width * 0.1,
-                          vertical: MediaQuery.of(context).size.height * 0.1,
-                        ),
+                        padding: const EdgeInsets.all(20), // Adjust the padding
                         minimumSize: const Size(double.infinity, 60),
                         // Set button height
                       ),
                       child: const Text(
-                        'Button 2',
+                        'التسجيلات',
                         style: TextStyle(fontSize: 20),
                         // Set button text size
                       ),
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        // Handle button 3 action
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AppointmentsPage(),
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width * 0.1,
-                          vertical: MediaQuery.of(context).size.height * 0.1,
-                        ),
+                        padding: const EdgeInsets.all(20), // Adjust the padding
                         minimumSize: const Size(double.infinity, 60),
                         // Set button height
                       ),
                       child: const Text(
-                        'Button 3',
+                        'المواعيد',
                         style: TextStyle(fontSize: 20),
                         // Set button text size
                       ),
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        // Handle button 4 action
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => VideosPage(),
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width * 0.1,
-                          vertical: MediaQuery.of(context).size.height * 0.1,
-                        ),
+                        padding: const EdgeInsets.all(20), // Adjust the padding
                         minimumSize: const Size(double.infinity, 60),
                         // Set button height
                       ),
                       child: const Text(
-                        'Button 4',
+                        'التمارين',
                         style: TextStyle(fontSize: 20),
                         // Set button text size
                       ),
