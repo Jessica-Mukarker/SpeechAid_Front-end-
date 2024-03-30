@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:speech_aid/therapist/RecordingScreenTherapist.dart';
 
 class AddVideoScreen extends StatefulWidget {
   @override
@@ -52,10 +53,16 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
         const SizedBox(height: 10),
         ElevatedButton(
           onPressed: () {
-            // Handle start recording action
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => RecordingScreenTherapist(),
+              ),
+            );
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color.fromARGB(255, 255, 255, 255), // Button color
+            backgroundColor:
+                const Color.fromARGB(255, 255, 255, 255), // Button color
           ),
           child: Text('بدء التسجيل'),
         ),

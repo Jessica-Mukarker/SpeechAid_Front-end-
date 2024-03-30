@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class AppointmentDetails {
   final String patientName;
-  final String date;
-  final String time;
+  final DateTime date;
+  final TimeOfDay time;
 
   AppointmentDetails({
     required this.patientName,
@@ -20,15 +20,27 @@ class AppointmentsPage extends StatefulWidget {
 class _AppointmentsPageState extends State<AppointmentsPage> {
   List<AppointmentDetails> appointments = [
     AppointmentDetails(
-        patientName: 'مريض 1', date: '25 أكتوبر 2024', time: '10:00 ص'),
+      patientName: 'مريض 1',
+      date: DateTime(2024, 10, 25),
+      time: TimeOfDay(hour: 10, minute: 0),
+    ),
     AppointmentDetails(
-        patientName: 'مريض 2', date: '26 أكتوبر 2024', time: '2:00 م'),
+      patientName: 'مريض 2',
+      date: DateTime(2024, 10, 26),
+      time: TimeOfDay(hour: 14, minute: 0),
+    ),
     AppointmentDetails(
-        patientName: 'مريض 3', date: '27 أكتوبر 2024', time: '4:00 م'),
+      patientName: 'مريض 3',
+      date: DateTime(2024, 10, 27),
+      time: TimeOfDay(hour: 16, minute: 0),
+    ),
   ];
 
   @override
   Widget build(BuildContext context) {
+    // Sort appointments based on the date
+    appointments.sort((a, b) => a.date.compareTo(b.date));
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('المواعيد'),
@@ -46,6 +58,9 @@ class _AppointmentsPageState extends State<AppointmentsPage> {
             appointment: appointment,
             onPressed: () {
               _showAppointmentDetails(context, appointment);
+            },
+            onDelete: () {
+              _deleteAppointment(appointment);
             },
           );
         },
@@ -66,12 +81,26 @@ class _AppointmentsPageState extends State<AppointmentsPage> {
             children: [
               Text('اسم المريض: ${appointment.patientName}'),
               const SizedBox(height: 8),
-              Text('التاريخ: ${appointment.date}'),
+              Text(
+                  'التاريخ: ${appointment.date.day}-${appointment.date.month}-${appointment.date.year}'),
               const SizedBox(height: 8),
-              Text('الوقت: ${appointment.time}'),
+              Text('الوقت: ${appointment.time.format(context)}'),
             ],
           ),
           actions: [
+            ElevatedButton(
+              onPressed: () {
+                _deleteAppointment(appointment);
+                Navigator.pop(context); // Close the dialog
+              },
+              child: const Text('تم الانتهاء'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
@@ -85,147 +114,192 @@ class _AppointmentsPageState extends State<AppointmentsPage> {
   }
 
   void _addAppointment() {
+    DateTime selectedDate = DateTime.now(); // Default value
+    TimeOfDay selectedTime = TimeOfDay.now(); // Default value
+    String? patientName;
+
     showDialog(
       context: context,
       builder: (context) {
-        String selectedDate = '25 أكتوبر 2024'; // Default value
-        String selectedTime = '10:00 ص'; // Default value
-        return AlertDialog(
-          title: const Text('إضافة موعد'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const TextField(
-                decoration: InputDecoration(labelText: 'اسم المريض'),
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text('إضافة موعد'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextField(
+                    decoration: InputDecoration(labelText: 'اسم المريض'),
+                    onChanged: (value) {
+                      patientName = value;
+                    },
+                  ),
+                  const SizedBox(height: 8),
+                  TextFormField(
+                    onTap: () async {
+                      final DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime(2100),
+                      );
+                      if (pickedDate != null && pickedDate != selectedDate) {
+                        setState(() {
+                          selectedDate = pickedDate;
+                        });
+                      }
+                    },
+                    readOnly: true,
+                    controller: TextEditingController(
+                        text:
+                            '${selectedDate.day}-${selectedDate.month}-${selectedDate.year}'),
+                    decoration: const InputDecoration(
+                      labelText: 'التاريخ',
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  TextFormField(
+                    onTap: () async {
+                      final TimeOfDay? pickedTime = await showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.now(),
+                      );
+                      if (pickedTime != null && pickedTime != selectedTime) {
+                        setState(() {
+                          selectedTime = pickedTime;
+                        });
+                      }
+                    },
+                    readOnly: true,
+                    controller: TextEditingController(
+                      text: '${selectedTime.format(context)}',
+                    ),
+                    decoration: const InputDecoration(
+                      labelText: 'الوقت',
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 8),
-              DropdownButtonFormField<String>(
-                value: selectedDate,
-                onChanged: (value) {
-                  setState(() {
-                    selectedDate = value!;
-                  });
-                },
-                items: [
-                  '25 أكتوبر 2024',
-                  '26 أكتوبر 2024',
-                  '27 أكتوبر 2024',
-                ].map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                decoration: const InputDecoration(labelText: 'التاريخ'),
-              ),
-              const SizedBox(height: 8),
-              DropdownButtonFormField<String>(
-                value: selectedTime,
-                onChanged: (value) {
-                  setState(() {
-                    selectedTime = value!;
-                  });
-                },
-                items: [
-                  '10:00 ص',
-                  '2:00 م',
-                  '4:00 م',
-                ].map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                decoration: const InputDecoration(labelText: 'الوقت'),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('إلغاء'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // Add appointment logic
-                Navigator.pop(context);
-              },
-              child: const Text('إضافة'),
-            ),
-          ],
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('إلغاء'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    if (patientName != null && patientName!.isNotEmpty) {
+                      // Add appointment to the list
+                      setState(() {
+                        appointments.add(AppointmentDetails(
+                          patientName: patientName!,
+                          date: selectedDate,
+                          time: selectedTime,
+                        ));
+                      });
+                      Navigator.pop(context); // Close the dialog
+                    } else {
+                      // Show an error message if patient name is empty
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('يرجى إدخال اسم المريض'),
+                        ),
+                      );
+                    }
+                  },
+                  child: const Text('إضافة'),
+                ),
+              ],
+            );
+          },
         );
       },
     );
+  }
+
+  void _deleteAppointment(AppointmentDetails appointment) {
+    setState(() {
+      appointments.remove(appointment);
+    });
   }
 }
 
 class AppointmentButton extends StatelessWidget {
   final AppointmentDetails appointment;
   final VoidCallback onPressed;
+  final VoidCallback onDelete;
 
   AppointmentButton({
     required this.appointment,
     required this.onPressed,
+    required this.onDelete,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          elevation: 4,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12), // Square border radius
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: ElevatedButton(
+              onPressed: onPressed,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(12), // Square border radius
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
                   children: [
-                    Text(
-                      'اسم المريض: ${appointment.patientName}',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'اسم المريض: ${appointment.patientName}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'التاريخ: ${appointment.date.day}-${appointment.date.month}-${appointment.date.year}',
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 16,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'الساعة: ${appointment.time.format(context)}',
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'التاريخ: ${appointment.date}',
-                      style: const TextStyle(
-                        color: Colors.grey,
-                        fontSize: 16,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'الساعة: ${appointment.time}',
-                      style: const TextStyle(
-                        color: Colors.grey,
-                        fontSize: 16,
-                      ),
+                    const SizedBox(width: 16),
+                    const Icon(
+                      Icons.keyboard_arrow_left,
+                      color: Colors.black,
                     ),
                   ],
                 ),
               ),
-              const SizedBox(width: 16),
-              const Icon(
-                Icons.keyboard_arrow_left,
-                color: Colors.black,
-              ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
