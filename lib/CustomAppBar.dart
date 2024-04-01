@@ -52,7 +52,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     Icon(Icons.notifications,
                         color: hasNotification ? Colors.red : Colors.black,
                         size: 24),
-                    SizedBox(width: 5),
+                    const SizedBox(width: 5),
                     Text(
                       'الإشعارات',
                       style: TextStyle(

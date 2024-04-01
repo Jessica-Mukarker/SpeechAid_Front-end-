@@ -4,6 +4,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:speech_aid/therapist/RecordingScreenTherapist.dart';
 
 class AddVideoScreen extends StatefulWidget {
+  const AddVideoScreen({super.key});
+
   @override
   _AddVideoScreenState createState() => _AddVideoScreenState();
 }
@@ -15,7 +17,7 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('إضافة محتوى'),
+        title: const Text('إضافة محتوى'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -45,7 +47,7 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
+        const Text(
           'هل ترغب في بدء التسجيل؟',
           style: TextStyle(fontSize: 20),
           textAlign: TextAlign.center,
@@ -56,7 +58,7 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => RecordingScreenTherapist(),
+                builder: (context) => const RecordingScreenTherapist(),
               ),
             );
           },
@@ -64,7 +66,7 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
             backgroundColor:
                 const Color.fromARGB(255, 255, 255, 255), // Button color
           ),
-          child: Text('بدء التسجيل'),
+          child: const Text('بدء التسجيل'),
         ),
       ],
     );
@@ -74,7 +76,7 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
+        const Text(
           'اختيار من الملفات',
           style: TextStyle(fontSize: 20),
           textAlign: TextAlign.center,
@@ -83,9 +85,9 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
         ElevatedButton(
           onPressed: _selectFiles,
           style: ElevatedButton.styleFrom(
-            backgroundColor: Color.fromARGB(255, 255, 254, 255), // Button color
+            backgroundColor: const Color.fromARGB(255, 255, 254, 255), // Button color
           ),
-          child: Text('اختيار من الملفات'),
+          child: const Text('اختيار من الملفات'),
         ),
       ],
     );
@@ -93,7 +95,7 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
 
   Widget _buildSelectedFilesList() {
     return _selectedFiles.isEmpty
-        ? Center(
+        ? const Center(
             child: Text(
               'سحب الملفات هنا أو ابحث في التخزين',
               style: TextStyle(fontSize: 18),

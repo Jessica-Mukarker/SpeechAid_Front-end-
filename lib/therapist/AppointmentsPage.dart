@@ -13,6 +13,8 @@ class AppointmentDetails {
 }
 
 class AppointmentsPage extends StatefulWidget {
+  const AppointmentsPage({super.key});
+
   @override
   _AppointmentsPageState createState() => _AppointmentsPageState();
 }
@@ -22,17 +24,17 @@ class _AppointmentsPageState extends State<AppointmentsPage> {
     AppointmentDetails(
       patientName: 'مريض 1',
       date: DateTime(2024, 10, 25),
-      time: TimeOfDay(hour: 10, minute: 0),
+      time: const TimeOfDay(hour: 10, minute: 0),
     ),
     AppointmentDetails(
       patientName: 'مريض 2',
       date: DateTime(2024, 10, 26),
-      time: TimeOfDay(hour: 14, minute: 0),
+      time: const TimeOfDay(hour: 14, minute: 0),
     ),
     AppointmentDetails(
       patientName: 'مريض 3',
       date: DateTime(2024, 10, 27),
-      time: TimeOfDay(hour: 16, minute: 0),
+      time: const TimeOfDay(hour: 16, minute: 0),
     ),
   ];
 
@@ -93,13 +95,13 @@ class _AppointmentsPageState extends State<AppointmentsPage> {
                 _deleteAppointment(appointment);
                 Navigator.pop(context); // Close the dialog
               },
-              child: const Text('تم الانتهاء'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
+              child: const Text('تم الانتهاء'),
             ),
             TextButton(
               onPressed: () {
@@ -130,7 +132,7 @@ class _AppointmentsPageState extends State<AppointmentsPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TextField(
-                    decoration: InputDecoration(labelText: 'اسم المريض'),
+                    decoration: const InputDecoration(labelText: 'اسم المريض'),
                     onChanged: (value) {
                       patientName = value;
                     },
@@ -173,7 +175,7 @@ class _AppointmentsPageState extends State<AppointmentsPage> {
                     },
                     readOnly: true,
                     controller: TextEditingController(
-                      text: '${selectedTime.format(context)}',
+                      text: selectedTime.format(context),
                     ),
                     decoration: const InputDecoration(
                       labelText: 'الوقت',
@@ -231,7 +233,7 @@ class AppointmentButton extends StatelessWidget {
   final VoidCallback onPressed;
   final VoidCallback onDelete;
 
-  AppointmentButton({
+  const AppointmentButton({super.key, 
     required this.appointment,
     required this.onPressed,
     required this.onDelete,
@@ -308,7 +310,7 @@ class AppointmentButton extends StatelessWidget {
 class AddAppointmentButton extends StatelessWidget {
   final VoidCallback onPressed;
 
-  AddAppointmentButton({
+  const AddAppointmentButton({super.key, 
     required this.onPressed,
   });
 

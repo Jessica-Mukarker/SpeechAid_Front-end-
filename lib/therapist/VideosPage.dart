@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:speech_aid/therapist/AddVideoScreen.dart';
 
-import 'AppointmentsPage.dart';
-
 class VideosPage extends StatelessWidget {
+  const VideosPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +37,7 @@ class VideosPage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => AddVideoScreen()),
+                              builder: (context) => const AddVideoScreen()),
                         );
                       },
                       style: ElevatedButton.styleFrom(
@@ -51,13 +51,13 @@ class VideosPage extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.add,
-                            color: Color.fromARGB(255, 255, 174, 229),
+                            color: const Color.fromARGB(255, 255, 174, 229),
                             size: MediaQuery.of(context).size.width * 0.1,
                           ),
                           SizedBox(
                               height:
                                   MediaQuery.of(context).size.height * 0.05),
-                          Text(
+                          const Text(
                             'اضافة ',
                             style: TextStyle(fontSize: 20),
                             textAlign: TextAlign.center,
@@ -80,13 +80,13 @@ class VideosPage extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.remove,
-                            color: Color(0xFF528FAA),
+                            color: const Color(0xFF528FAA),
                             size: MediaQuery.of(context).size.width * 0.1,
                           ),
                           SizedBox(
                               height:
                                   MediaQuery.of(context).size.height * 0.05),
-                          Text(
+                          const Text(
                             'ازالة ',
                             style: TextStyle(fontSize: 20),
                             textAlign: TextAlign.center,
@@ -107,13 +107,13 @@ class VideosPage extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.edit,
-                            color: Color(0xFF528FAA),
+                            color: const Color(0xFF528FAA),
                             size: MediaQuery.of(context).size.width * 0.1,
                           ),
                           SizedBox(
                               height:
                                   MediaQuery.of(context).size.height * 0.05),
-                          Text(
+                          const Text(
                             'تعديل ',
                             style: TextStyle(fontSize: 20),
                             textAlign: TextAlign.center,
@@ -134,13 +134,13 @@ class VideosPage extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.block,
-                            color: Color.fromARGB(255, 255, 174, 229),
+                            color: const Color.fromARGB(255, 255, 174, 229),
                             size: MediaQuery.of(context).size.width * 0.1,
                           ),
                           SizedBox(
                               height:
                                   MediaQuery.of(context).size.height * 0.05),
-                          Text(
+                          const Text(
                             'حظر ',
                             style: TextStyle(fontSize: 20),
                             textAlign: TextAlign.center,

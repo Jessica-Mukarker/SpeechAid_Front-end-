@@ -50,7 +50,7 @@ class login extends StatelessWidget {
     if (enteredUsername == validUsername && enteredPassword == validPassword) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) =>  FriendlyDashboard()),
+        MaterialPageRoute(builder: (context) =>  const FriendlyDashboard()),
       );
     } else {
       showDialog(

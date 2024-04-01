@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'login.dart'; // Import the login class
 
 class signup extends StatefulWidget {
-  const signup({Key? key});
+  const signup({super.key, Key? key});
 
   @override
   State<signup> createState() => _signupState();
@@ -11,11 +12,13 @@ class signup extends StatefulWidget {
 
 class _signupState extends State<signup> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+    final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _dateOfBirthController = TextEditingController();
+
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _dateOfBirthController = TextEditingController();
 
   bool isSigningUp = false;
   String? _selectedItem;
@@ -27,6 +30,30 @@ class _signupState extends State<signup> {
     _passwordController.dispose();
     _dateOfBirthController.dispose();
     super.dispose();
+  }
+
+Future<UserCredential?> _signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleSignInAccount =
+          await _googleSignIn.signIn();
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication =
+            await googleSignInAccount.authentication;
+
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleSignInAuthentication.accessToken,
+          idToken: googleSignInAuthentication.idToken,
+        );
+
+        final UserCredential userCredential =
+            await _auth.signInWithCredential(credential);
+        return userCredential;
+      }
+      return null;
+    } catch (e) {
+      print('Error signing in with Google: $e');
+      return null;
+    }
   }
 
   @override
@@ -137,7 +164,7 @@ class _signupState extends State<signup> {
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
-                      dropdownColor: Color(0xFF75A5BB),
+                      dropdownColor: const Color(0xFF75A5BB),
                       isExpanded: true,
                       hint: const Row(
                         children: [
@@ -182,11 +209,9 @@ class _signupState extends State<signup> {
                               email: _emailController.text,
                               password: _passwordController.text,
                             );
-                            if (credential != null) {
-                              Navigator.pushReplacementNamed(
-                                  context, "friendlyDashboard");
-                            }
-                          } on FirebaseAuthException catch (e) {
+                            Navigator.pushReplacementNamed(
+                                context, "friendlyDashboard");
+                                                    } on FirebaseAuthException catch (e) {
                             if (e.code == 'weak-password') {
                               print('The password provided is too weak.');
                             } else if (e.code == 'email-already-in-use') {
@@ -220,32 +245,37 @@ class _signupState extends State<signup> {
                   style: TextStyle(color: Colors.white),
                 ),
                 const SizedBox(height: 5),
-                TextButton(
-                  onPressed: () {
-                    // Navigate to the login screen
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => login()),
-                    );
-                  },
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CircleAvatar(
-                        backgroundImage: AssetImage('assets/google.jpg'),
-                        radius: 15,
-                      ),
-                      SizedBox(width: 12),
-                      Text(
-                        "اشترك بواسطة جوجل",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Color.fromARGB(255, 255, 174, 229),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+               TextButton(
+  onPressed: () async {
+    try {
+      final UserCredential? userCredential = await _signInWithGoogle();
+      if (userCredential != null) {
+        // Navigate to the dashboard or home screen
+        Navigator.pushReplacementNamed(context, 'friendlyDashboard');
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  },
+  child: const Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      CircleAvatar(
+        backgroundImage: AssetImage('assets/google.jpg'),
+        radius: 15,
+      ),
+      SizedBox(width: 12),
+      Text(
+        "اشترك بواسطة جوجل",
+        style: TextStyle(
+          fontSize: 16,
+          color: Color.fromARGB(255, 255, 174, 229),
+        ),
+      ),
+    ],
+  ),
+),
+
                 const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

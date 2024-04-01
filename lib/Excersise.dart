@@ -23,7 +23,7 @@ class Exercise extends StatelessWidget {
           Expanded(
             child: GridView.count(
               crossAxisCount: 2,
-              padding: EdgeInsets.all(30), // Adjust the padding to add spaces
+              padding: const EdgeInsets.all(30), // Adjust the padding to add spaces
               mainAxisSpacing: 30, // Add vertical space between the buttons
               crossAxisSpacing: 30, // Add horizontal space between the buttons
               childAspectRatio: 1.5,

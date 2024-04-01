@@ -3,6 +3,8 @@ import 'AppointmentsPage.dart';
 import 'VideosPage.dart';
 
 class therapistDashboard extends StatelessWidget {
+  const therapistDashboard({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +80,7 @@ class therapistDashboard extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => AppointmentsPage(),
+                            builder: (context) => const AppointmentsPage(),
                           ),
                         );
                       },
@@ -101,7 +103,7 @@ class therapistDashboard extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => VideosPage(),
+                            builder: (context) => const VideosPage(),
                           ),
                         );
                       },
