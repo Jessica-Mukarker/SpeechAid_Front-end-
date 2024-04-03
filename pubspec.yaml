@@ -45,6 +45,8 @@ dependencies:
   camera: ^0.10.5+9
   awesome_dialog:  ^3.2.0
   file_picker: ^8.0.0+1
+  oauth2_client: ^3.2.2
+  sign_in_button: ^3.2.0
   
  
 dev_dependencies:

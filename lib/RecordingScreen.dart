@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key, Key? key});
+  const MyApp({super.key, Key? key1});
 
   @override
   Widget build(BuildContext context) {

@@ -4,7 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'login.dart'; // Import the login class
 
 class signup extends StatefulWidget {
-  const signup({super.key, Key? key});
+  const signup({super.key, Key? key1});
 
   @override
   State<signup> createState() => _signupState();
@@ -12,8 +12,7 @@ class signup extends StatefulWidget {
 
 class _signupState extends State<signup> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-    final GoogleSignIn _googleSignIn = GoogleSignIn();
-
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -32,7 +31,7 @@ class _signupState extends State<signup> {
     super.dispose();
   }
 
-Future<UserCredential?> _signInWithGoogle() async {
+  Future<UserCredential?> _signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleSignInAccount =
           await _googleSignIn.signIn();
@@ -210,8 +209,8 @@ Future<UserCredential?> _signInWithGoogle() async {
                               password: _passwordController.text,
                             );
                             Navigator.pushReplacementNamed(
-                                context, "friendlyDashboard");
-                                                    } on FirebaseAuthException catch (e) {
+                                context, "dashboard");
+                          } on FirebaseAuthException catch (e) {
                             if (e.code == 'weak-password') {
                               print('The password provided is too weak.');
                             } else if (e.code == 'email-already-in-use') {
@@ -245,37 +244,38 @@ Future<UserCredential?> _signInWithGoogle() async {
                   style: TextStyle(color: Colors.white),
                 ),
                 const SizedBox(height: 5),
-               TextButton(
-  onPressed: () async {
-    try {
-      final UserCredential? userCredential = await _signInWithGoogle();
-      if (userCredential != null) {
-        // Navigate to the dashboard or home screen
-        Navigator.pushReplacementNamed(context, 'friendlyDashboard');
-      }
-    } catch (e) {
-      print(e.toString());
-    }
-  },
-  child: const Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      CircleAvatar(
-        backgroundImage: AssetImage('assets/google.jpg'),
-        radius: 15,
-      ),
-      SizedBox(width: 12),
-      Text(
-        "اشترك بواسطة جوجل",
-        style: TextStyle(
-          fontSize: 16,
-          color: Color.fromARGB(255, 255, 174, 229),
-        ),
-      ),
-    ],
-  ),
-),
-
+                TextButton(
+                  onPressed: () async {
+                    try {
+                      final UserCredential? userCredential =
+                          await _signInWithGoogle();
+                      if (userCredential != null) {
+                        // Navigate to the dashboard or home screen
+                        Navigator.pushReplacementNamed(
+                            context, 'friendlyDashboard');
+                      }
+                    } catch (e) {
+                      print(e.toString());
+                    }
+                  },
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: AssetImage('assets/google.jpg'),
+                        radius: 15,
+                      ),
+                      SizedBox(width: 12),
+                      Text(
+                        "اشترك بواسطة جوجل",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Color.fromARGB(255, 255, 174, 229),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
