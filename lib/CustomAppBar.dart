@@ -143,7 +143,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.black,
-                        
                       ),
                     ),
                   ],
@@ -152,7 +151,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             ];
           },
           onSelected: (value) {
-            onMenuItemSelected(value);
+            if (value == 'Log Out') {
+              // Call the logout method and pass the BuildContext
+              onLogout(context);
+            } else {
+              // Call the callback function for other menu items
+              onMenuItemSelected(value);
+            }
           },
         ),
       ],
@@ -161,49 +166,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-}
 
-class FriendlyDashboard extends StatefulWidget {
-  const FriendlyDashboard({Key? key}) : super(key: key);
-
-  @override
-  _FriendlyDashboardState createState() => _FriendlyDashboardState();
-}
-
-class _FriendlyDashboardState extends State<FriendlyDashboard> {
-  int notificationCount = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        notificationCount: notificationCount,
-        onMenuItemSelected: (String value) {
-          if (value == 'Log Out') {
-            // Clear all routes and push login
-            Navigator.pushNamedAndRemoveUntil(
-                context, '/login', (route) => false);
-          } else if (value == 'Notification') {
-            // Handle notification option
-            setState(() {
-              notificationCount = 0; // Reset notification count
-            });
-          }
-        },
-        title: const Text('الصفحة الرئيسية'),
-      ),
-      body: const Center(
-        child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // Your content here
-            ],
-          ),
-        ),
-      ),
-    );
+  void onLogout(BuildContext context) {
+    // Pop all routes until reaching the login screen
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 }
