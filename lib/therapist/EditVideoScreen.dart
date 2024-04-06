@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:speech_aid/therapist/RecordingScreenTherapist.dart';
 
-class AddVideoScreen extends StatefulWidget {
-  const AddVideoScreen({super.key});
+class EditVideoScreen extends StatefulWidget {
+  const EditVideoScreen({Key? key}) : super(key: key);
 
   @override
-  _AddVideoScreenState createState() => _AddVideoScreenState();
+  _EditContentState createState() => _EditContentState();
 }
 
-class _AddVideoScreenState extends State<AddVideoScreen> {
+class _EditContentState extends State<EditVideoScreen> {
   List<File> _selectedFiles = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('إضافة محتوى'),
+        title: const Text('تعديل المحتوى'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -32,7 +32,7 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Colors.grey[200],
                   borderRadius: BorderRadius.circular(10.0),
                   boxShadow: [
                     BoxShadow(
@@ -57,7 +57,7 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const Text(
-          'هل ترغب في بدء التسجيل؟',
+          'هل ترغب التسجيل مرة اخرى ؟',
           style: TextStyle(fontSize: 20),
           textAlign: TextAlign.center,
         ),
@@ -123,7 +123,7 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
     return _selectedFiles.isEmpty
         ? const Center(
             child: Text(
-              'سحب الملفات هنا أو ابحث في التخزين',
+              'اذا كنت ترغب في تحديث الفيديو, يرجى سحب الملفات هنا أو ابحث في التخزين',
               style: TextStyle(fontSize: 18),
               textAlign: TextAlign.center,
             ),
