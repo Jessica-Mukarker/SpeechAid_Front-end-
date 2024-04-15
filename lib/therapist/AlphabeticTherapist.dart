@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:speech_aid/CustomAppBar.dart';
-import 'package:speech_aid/Excersise.dart';
 
-class Alphabetic extends StatelessWidget {
-  const Alphabetic({Key? key}) : super(key: key);
+import 'package:speech_aid/therapist/CustomAppBarTherapist.dart';
+import 'package:speech_aid/therapist/ExerciseTherapist.dart';
+
+class AlphabeticTherapist extends StatelessWidget {
+  const AlphabeticTherapist({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
+      appBar: CustomAppBarTherapist(
         title: const Text('الاحرف العربية'),
         notificationCount: 0, // Set notificationCount to 0 initially
         onMenuItemSelected: (String value) {
           // Handle menu item selection here
         },
-        actions: [],
       ),
       body: GridView.count(
         crossAxisCount: 4, // 4 columns
@@ -30,7 +30,8 @@ class Alphabetic extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const Exercise()),
+                MaterialPageRoute(
+                    builder: (context) => const ExerciseTherapist()),
               );
             },
           );
@@ -42,61 +43,61 @@ class Alphabetic extends StatelessWidget {
   String _getArabicLetter(int index) {
     switch (index) {
       case 0:
-        return 'ث';
-      case 1:
-        return 'ت';
-      case 2:
-        return 'ب';
-      case 3:
         return 'أ';
+      case 1:
+        return 'ب';
+      case 2:
+        return 'ت';
+      case 3:
+        return 'ث';
       case 4:
-        return 'د';
-      case 5:
-        return 'خ';
-      case 6:
-        return 'ح';
-      case 7:
         return 'ج';
+      case 5:
+        return 'ح';
+      case 6:
+        return 'خ';
+      case 7:
+        return 'د';
       case 8:
-        return 'س';
-      case 9:
-        return 'ز';
-      case 10:
-        return 'ر';
-      case 11:
         return 'ذ';
+      case 9:
+        return 'ر';
+      case 10:
+        return 'ز';
+      case 11:
+        return 'س';
       case 12:
-        return 'ط';
-      case 13:
-        return 'ض';
-      case 14:
-        return 'ص';
-      case 15:
         return 'ش';
+      case 13:
+        return 'ص';
+      case 14:
+        return 'ض';
+      case 15:
+        return 'ط';
       case 16:
-        return 'ف';
-      case 17:
-        return 'غ';
-      case 18:
-        return 'ع';
-      case 19:
         return 'ظ';
+      case 17:
+        return 'ع';
+      case 18:
+        return 'غ';
+      case 19:
+        return 'ف';
       case 20:
-        return 'م';
-      case 21:
-        return 'ل';
-      case 22:
-        return 'ك';
-      case 23:
         return 'ق';
+      case 21:
+        return 'ك';
+      case 22:
+        return 'ل';
+      case 23:
+        return 'م';
       case 24:
-        return 'ي';
-      case 25:
-        return 'و';
-      case 26:
-        return 'ه';
-      case 27:
         return 'ن';
+      case 25:
+        return 'ه';
+      case 26:
+        return 'و';
+      case 27:
+        return 'ي';
       default:
         return '';
     }

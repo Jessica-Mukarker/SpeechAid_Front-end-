@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:speech_aid/CustomAppBar.dart';
 import 'package:speech_aid/alphabetic.dart';
+import 'package:speech_aid/PatientProfileScreen.dart';
 
 class FriendlyDashboard extends StatefulWidget {
   const FriendlyDashboard({Key? key}) : super(key: key);
@@ -17,11 +19,11 @@ class _FriendlyDashboardState extends State<FriendlyDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomAppBar(
         title: const Text('الصفحة الرئيسية'),
-        actions: [
-          _buildPopupMenuButton(),
-        ],
+        notificationCount: 0,
+        onMenuItemSelected: (String value) {},
+        actions: [],
       ),
       body: Center(
         child: Padding(

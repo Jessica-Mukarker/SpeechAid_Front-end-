@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'login.dart'; // Import the login class
 
@@ -17,6 +18,7 @@ class _signupState extends State<signup> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _idNumberController = TextEditingController();
   final TextEditingController _dateOfBirthController = TextEditingController();
 
   bool isSigningUp = false;
@@ -27,6 +29,7 @@ class _signupState extends State<signup> {
     _usernameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _idNumberController.dispose();
     _dateOfBirthController.dispose();
     super.dispose();
   }
@@ -53,6 +56,17 @@ class _signupState extends State<signup> {
       print('Error signing in with Google: $e');
       return null;
     }
+  }
+
+  bool _validateName(String value) {
+    // Check if the name contains only letters and spaces
+    return RegExp(r'^[a-zA-Z\s]+$').hasMatch(value);
+  }
+
+  bool _validateEmail(String value) {
+    // Check if the email contains '@' and at least one '.'
+    return RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
+        .hasMatch(value);
   }
 
   @override
@@ -94,6 +108,7 @@ class _signupState extends State<signup> {
                 ),
                 const SizedBox(height: 40),
                 TextField(
+                  controller: _usernameController,
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     hintText: "اسم المستخدم",
@@ -109,6 +124,7 @@ class _signupState extends State<signup> {
                 ),
                 const SizedBox(height: 20),
                 TextField(
+                  controller: _emailController,
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     hintText: "البريد الالكتروني",
@@ -124,6 +140,7 @@ class _signupState extends State<signup> {
                 ),
                 const SizedBox(height: 20),
                 TextField(
+                  controller: _passwordController,
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     hintText: "كلمة السر",
@@ -139,7 +156,9 @@ class _signupState extends State<signup> {
                   obscureText: true,
                 ),
                 const SizedBox(height: 20),
-                TextField(
+                TextFormField(
+                  readOnly: true,
+                  controller: _dateOfBirthController,
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                     hintText: "تاريخ الميلاد",
@@ -152,6 +171,42 @@ class _signupState extends State<signup> {
                     fillColor: Colors.white.withOpacity(0.2),
                     prefixIcon:
                         const Icon(Icons.calendar_today, color: Colors.white),
+                  ),
+                  onTap: () async {
+                    final DateTime? picked = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(1900),
+                      lastDate: DateTime.now(),
+                    );
+                    if (picked != null) {
+                      setState(() {
+                        _dateOfBirthController.text =
+                            "${picked.day}/${picked.month}/${picked.year}";
+                      });
+                    }
+                  },
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: _idNumberController,
+                  style: const TextStyle(color: Colors.white),
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                    LengthLimitingTextInputFormatter(9),
+                  ],
+                  decoration: InputDecoration(
+                    hintText: "رقم الهوية",
+                    hintStyle: const TextStyle(color: Colors.white),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(18),
+                      borderSide: BorderSide.none,
+                    ),
+                    filled: true,
+                    fillColor: Colors.white.withOpacity(0.2),
+                    prefixIcon: const Icon(Icons.format_list_numbered,
+                        color: Colors.white),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -202,6 +257,16 @@ class _signupState extends State<signup> {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () async {
+                          if (!_validateName(_usernameController.text)) {
+                            // Name validation failed
+                            print('Please enter a valid name');
+                            return;
+                          }
+                          if (!_validateEmail(_emailController.text)) {
+                            // Email validation failed
+                            print('Please enter a valid email address');
+                            return;
+                          }
                           try {
                             final credential =
                                 await _auth.createUserWithEmailAndPassword(

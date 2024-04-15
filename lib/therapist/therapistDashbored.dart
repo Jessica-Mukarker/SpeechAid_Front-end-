@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:speech_aid/therapist/AlphabeticTherapist.dart';
+import 'package:speech_aid/therapist/CombinedTherapistPage.dart';
+import 'package:speech_aid/therapist/CustomAppBarTherapist.dart';
 import 'AppointmentsPage.dart';
 import 'VideosPage.dart';
 
@@ -8,16 +11,11 @@ class therapistDashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('صفحة الاخصائي'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              // Handle action
-            },
-            icon: const Icon(Icons.menu),
-          ),
-        ],
+      appBar: CustomAppBarTherapist(
+        // Use CustomAppBarTherapist instead of AppBar
+        title: Text('صفحة الأخصائي'), // Set the title
+        notificationCount: 0,
+        onMenuItemSelected: (String value) {},
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -29,7 +27,7 @@ class therapistDashboard extends StatelessWidget {
                 const SizedBox(height: 20),
                 Image.asset(
                   'assets/image.png',
-                  width: 150, // Adjust the size of the icon
+                  width: 150,
                   height: 150,
                 ),
                 const SizedBox(height: 20),
@@ -103,7 +101,7 @@ class therapistDashboard extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const VideosPage(),
+                            builder: (context) => CombinedTherapistPage(),
                           ),
                         );
                       },

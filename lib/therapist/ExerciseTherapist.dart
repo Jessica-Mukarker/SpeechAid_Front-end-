@@ -1,29 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:speech_aid/CustomAppBar.dart';
-import 'package:speech_aid/RecordingScreen.dart';
+import 'package:speech_aid/therapist/CustomAppBarTherapist.dart';
+import 'package:speech_aid/therapist/VideosPage.dart';
 
-class Exercise extends StatelessWidget {
-  const Exercise({Key? key}) : super(key: key);
+class ExerciseTherapist extends StatelessWidget {
+  const ExerciseTherapist({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-          title: const Text('الصفحة التمرينات'),
-          notificationCount: 0, // Set notificationCount to 0 initially
-          onMenuItemSelected: (String value) {
-            // Handle menu item selection here
-          }, actions: [],),
+      appBar: CustomAppBarTherapist(
+        title: const Text('الصفحة التمرينات'),
+        notificationCount: 0, // Set notificationCount to 0 initially
+        onMenuItemSelected: (String value) {
+          // Handle menu item selection here
+        },
+      ),
       body: Column(
         children: [
           // Image added here
           Image.asset(
             'assets/image.png',
+            width: 150,
+            height: 150,
           ),
           Expanded(
             child: GridView.count(
               crossAxisCount: 2,
-              padding: const EdgeInsets.all(30), // Adjust the padding to add spaces
+              padding:
+                  const EdgeInsets.all(30), // Adjust the padding to add spaces
               mainAxisSpacing: 30, // Add vertical space between the buttons
               crossAxisSpacing: 30, // Add horizontal space between the buttons
               childAspectRatio: 1.5,
@@ -34,7 +38,7 @@ class Exercise extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const RecordingScreen(),
+                        builder: (context) => const VideosPage(),
                       ),
                     );
                   },
@@ -45,7 +49,7 @@ class Exercise extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const RecordingScreen(),
+                        builder: (context) => const VideosPage(),
                       ),
                     );
                   },
@@ -56,7 +60,7 @@ class Exercise extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const RecordingScreen(),
+                        builder: (context) => const VideosPage(),
                       ),
                     );
                   },
@@ -67,7 +71,7 @@ class Exercise extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const RecordingScreen(),
+                        builder: (context) => const VideosPage(),
                       ),
                     );
                   },
@@ -78,7 +82,7 @@ class Exercise extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const RecordingScreen(),
+                        builder: (context) => const VideosPage(),
                       ),
                     );
                   },
@@ -89,7 +93,7 @@ class Exercise extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const RecordingScreen(),
+                        builder: (context) => const VideosPage(),
                       ),
                     );
                   },

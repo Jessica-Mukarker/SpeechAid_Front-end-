@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:speech_aid/PatientProfileScreen.dart';
+import 'package:speech_aid/therapist/DoctorProfileScreen%20.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+class CustomAppBarTherapist extends StatelessWidget
+    implements PreferredSizeWidget {
   final int notificationCount;
   final Function(String) onMenuItemSelected;
   final Widget title;
 
-  const CustomAppBar({
+  const CustomAppBarTherapist({
     Key? key,
     required this.notificationCount,
     required this.onMenuItemSelected,
     required this.title,
-    required List<Widget> actions,
   }) : super(key: key);
 
   @override
@@ -82,57 +82,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ],
                 ),
               ),
-              /*      const PopupMenuItem(
-                value: 'History',
-                height: 40,
-                child: Row(
-                  children: [
-                    Icon(Icons.history, color: Colors.black, size: 24),
-                    SizedBox(width: 5),
-                    Text(
-                      'تاريخ التسجيلات',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const PopupMenuItem(
-                value: 'Therapist Hospital',
-                height: 40,
-                child: Row(
-                  children: [
-                    Icon(Icons.local_hospital, color: Colors.black, size: 24),
-                    SizedBox(width: 5),
-                    Text(
-                      'موقع العيادة',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ),*/
-              const PopupMenuItem(
-                value: 'Therapist Info',
-                height: 40,
-                child: Row(
-                  children: [
-                    Icon(Icons.info, color: Colors.black, size: 24),
-                    SizedBox(width: 5),
-                    Text(
-                      'معلومات الأخصائي',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
               const PopupMenuItem(
                 value: 'Log Out',
                 height: 40,
@@ -147,7 +96,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                         color: Colors.black,
                       ),
                     ),
-                  ],
+                  ], 
                 ),
               ),
             ];
@@ -161,7 +110,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const PatientProfileScreen()),
+                    builder: (context) => const DoctorProfileScreen()),
               );
             } else {
               // Call the callback function for other menu items
