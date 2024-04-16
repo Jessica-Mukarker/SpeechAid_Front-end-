@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:flutter/widgets.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key, Key? key1});
@@ -211,19 +212,13 @@ class _RecordingScreenState extends State<RecordingScreen> {
       appBar: AppBar(
         title: const Text('صفحة التسجيل'),
         actions: [
-          Visibility(
-            visible: _isRecording,
-            child: Container(
-              margin: const EdgeInsets.only(right: 10),
-              alignment: Alignment.center,
-              child: const Text(
-                'تسجيل',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                ),
-              ),
+          IconButton(
+            icon: const Icon(
+              Icons.help_outline,
             ),
+            onPressed: () {
+              _showMenu(context); // Pass the BuildContext as an argument
+            },
           ),
         ],
       ),
@@ -445,6 +440,93 @@ class _RecordingScreenState extends State<RecordingScreen> {
             ],
           );
         }
+      },
+    );
+  }
+
+  void _showMenu(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Expanded(
+                child: Text(
+                  'مساعدة',
+                  textAlign: TextAlign.right,
+                ),
+              ),
+            ],
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'السَّين هو حرف من حروف الهجاء العربية، وهو مُهمل إذا وقع في منتصف الكلمة، وينطق كلما وُضع في بدايتها وفي نهايتها، وهو متميز بصوته المهموس.',
+                        style: TextStyle(fontSize: 16),
+                        textAlign: TextAlign.right,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: [
+                        Image.asset(
+                          'assets/sLetter1.jpg',
+                          width: 100,
+                          height: 100,
+                        ),
+                        const SizedBox(height: 8),
+                        IconButton(
+                          icon: const Icon(Icons.close, color: Colors.red),
+                          onPressed: () {
+                            // Handle close action
+                          },
+                        ),
+                      ],
+                    ),
+                    const SizedBox(width: 16),
+                    Column(
+                      children: [
+                        Image.asset(
+                          'assets/sLetter2.jpg',
+                          width: 100,
+                          height: 100,
+                        ),
+                        const SizedBox(height: 8),
+                        IconButton(
+                          icon: const Icon(Icons.check, color: Colors.green),
+                          onPressed: () {
+                            // Handle check action
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('إغلاق'),
+            ),
+          ],
+        );
       },
     );
   }

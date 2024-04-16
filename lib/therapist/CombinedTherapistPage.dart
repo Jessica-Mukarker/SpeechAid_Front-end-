@@ -103,6 +103,7 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
                 ),
               ),
               const SizedBox(height: 10),
+              //exercise buttons for fix
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
@@ -226,6 +227,7 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
     );
   }
 
+//choose the letter that you want
   void _showLettersPopup(BuildContext context) {
     showDialog(
       context: context,
@@ -292,6 +294,7 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
     );
   }
 
+  ///the letters
   List<Widget> _buildLetterList(BuildContext context) {
     final List<String> arabicLetters = [
       'ث',
@@ -329,8 +332,8 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
     for (int i = 0; i < arabicLetters.length; i++) {
       currentRow.add(
         SizedBox(
-          height: 60,
-          width: 60,
+          height: 50,
+          width: 50,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
@@ -381,6 +384,7 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
     ];
   }
 
+//////Choose the part (المقطع)that you want
   void _showPopup(BuildContext context, List<String> titles) {
     showDialog(
       context: context,
@@ -390,7 +394,7 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
             borderRadius: BorderRadius.circular(20),
           ),
           child: FractionallySizedBox(
-            widthFactor: 0.8, // Adjust the width factor as needed
+            widthFactor: 0.8,
             child: Container(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -413,10 +417,32 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
-                          setState(() {
-                            selectedOption = titles[index];
-                          });
-                          Navigator.of(context).pop();
+                          if (titles[index] == 'المقاطع القصيرة') {
+                            _showShortSectionOptions(context);
+                          } else if (titles[index] == 'المقاطع الطويلة') {
+                            _showLongSectionOptions(context);
+                          } else {
+                            setState(() {
+                              selectedOption = titles[index];
+                            });
+                            Navigator.of(context).pop();
+                          }
+                          // Set the selectedOption for "المقاطع القصيرة"
+                          if (titles[index] == 'المقاطع القصيرة' &&
+                                  titles[index] == 'كسرة' ||
+                              titles[index] == 'ضمة' ||
+                              titles[index] == 'فتحة') {
+                            setState(() {
+                              selectedOption = 'المقاطع القصيرة';
+                            });
+                          } else if (titles[index] == 'المقاطع الطويلة' &&
+                                  titles[index] == 'الالف' ||
+                              titles[index] == 'الواو' ||
+                              titles[index] == 'الياء') {
+                            setState(() {
+                              selectedOption = 'المقاطع الطويلة';
+                            });
+                          }
                         },
                         child: Container(
                           padding: const EdgeInsets.all(12),
@@ -458,5 +484,247 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
         );
       },
     );
+  }
+
+  void _showShortSectionOptions(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: FractionallySizedBox(
+            widthFactor: 0.8, // Adjust the width factor as needed
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    'اختر المقطع القصير المطلوب',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  const Divider(height: 20, color: Colors.black),
+                  const SizedBox(height: 20),
+                  SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: _buildShortSectionOptions(context),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  const Divider(height: 20, color: Colors.black),
+                  const SizedBox(height: 20),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      'اغلاق',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  List<Widget> _buildShortSectionOptions(BuildContext context) {
+    final List<String> shortSectionOptions = [
+      'كسرة',
+      'ضمة',
+      'فتحة',
+    ];
+
+    List<Widget> rows = [];
+    List<Widget> currentRow = [];
+    for (int i = 0; i < shortSectionOptions.length; i++) {
+      currentRow.add(
+        SizedBox(
+          height: 60,
+          width: 60,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  selectedOption = shortSectionOptions[i];
+                });
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.zero,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                backgroundColor: selectedOption == shortSectionOptions[i]
+                    ? const Color.fromARGB(255, 245, 158, 188)
+                    : const Color.fromARGB(255, 207, 204, 204),
+              ),
+              child: Center(
+                child: Text(
+                  shortSectionOptions[i],
+                  style: const TextStyle(fontSize: 20),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+      if ((i + 1) % 3 == 0 || i == shortSectionOptions.length - 1) {
+        rows.add(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: List.from(currentRow),
+          ),
+        );
+        currentRow.clear();
+      }
+    }
+    return [
+      SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: List.from(rows),
+        ),
+      ),
+    ];
+  }
+
+  void _showLongSectionOptions(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: FractionallySizedBox(
+            widthFactor: 0.8, // Adjust the width factor as needed
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    'اختر الحرف المطلوب',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  const Divider(height: 20, color: Colors.black),
+                  const SizedBox(height: 20),
+                  SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: _buildLongSectionOptions(context),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  const Divider(height: 20, color: Colors.black),
+                  const SizedBox(height: 20),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      'اغلاق',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  List<Widget> _buildLongSectionOptions(BuildContext context) {
+    final List<String> longSectionOptions = [
+      'الياء',
+      'الواو',
+      'الالف',
+    ];
+
+    List<Widget> rows = [];
+    List<Widget> currentRow = [];
+    for (int i = 0; i < longSectionOptions.length; i++) {
+      currentRow.add(
+        SizedBox(
+          height: 60,
+          width: 60,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  selectedOption = longSectionOptions[i];
+                });
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.zero,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                backgroundColor: selectedOption == longSectionOptions[i]
+                    ? const Color.fromARGB(255, 245, 158, 188)
+                    : const Color.fromARGB(255, 207, 204, 204),
+              ),
+              child: Center(
+                child: Text(
+                  longSectionOptions[i],
+                  style: const TextStyle(fontSize: 20),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+      if ((i + 1) % 3 == 0 || i == longSectionOptions.length - 1) {
+        rows.add(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: List.from(currentRow),
+          ),
+        );
+        currentRow.clear();
+      }
+    }
+    return [
+      SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: List.from(rows),
+        ),
+      ),
+    ];
   }
 }
