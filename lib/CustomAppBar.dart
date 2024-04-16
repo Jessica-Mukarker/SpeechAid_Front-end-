@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:speech_aid/PatientProfileScreen.dart';
+import 'package:speech_aid/showRecordings.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final int notificationCount;
@@ -162,6 +163,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) => const PatientProfileScreen()),
+              );
+            } else if (value == 'Recordings') {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ShowRecording(),
+                ),
               );
             } else {
               // Call the callback function for other menu items

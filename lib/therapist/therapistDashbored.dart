@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:speech_aid/therapist/AlphabeticTherapist.dart';
 import 'package:speech_aid/therapist/CombinedTherapistPage.dart';
 import 'package:speech_aid/therapist/CustomAppBarTherapist.dart';
+import 'package:speech_aid/therapist/patientdetail.dart';
 import 'AppointmentsPage.dart';
 import 'VideosPage.dart';
 
@@ -39,7 +40,12 @@ class therapistDashboard extends StatelessWidget {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        // Handle button 1 action
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const PatientDetail(),
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -50,7 +56,7 @@ class therapistDashboard extends StatelessWidget {
                         // Set button height
                       ),
                       child: const Text(
-                        'المستخدم',
+                        'المرضى',
                         style: TextStyle(fontSize: 20),
                         // Set button text size
                       ),
