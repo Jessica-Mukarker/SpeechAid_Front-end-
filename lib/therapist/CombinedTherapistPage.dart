@@ -187,17 +187,20 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
     required IconData icon,
     required String label,
     required VoidCallback onPressed,
-    required Color color, // Added color parameter
+    required Color color,
   }) {
-    return SizedBox(
-      height: 160, // Adjust the height according to your preference
-      width: 160, // Adjust the width according to your preference
+    final screenSize = MediaQuery.of(context).size;
+    final buttonSize =
+        screenSize.width * 0.4; // Adjust the button size as needed
 
+    return SizedBox(
+      height: buttonSize,
+      width: buttonSize,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(buttonSize * 0.1),
           ),
           backgroundColor: Colors.white,
         ),
@@ -206,20 +209,19 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
           children: [
             Icon(
               icon,
-              size: 40, // Adjust the icon size according to your preference
-              color: color, // Use color parameter for icon color
+              size: buttonSize * 0.25, // Adjust the icon size as needed
+              color: color,
             ),
-            const SizedBox(height: 8), // Add spacing between icon and text
+            const SizedBox(height: 8),
             Text(
               label,
               style: TextStyle(
-                fontSize:
-                    20, // Adjust the text size according to your preference
-                color: color, // Use color parameter for text color
-                fontWeight: FontWeight.bold, // Make text bold
+                fontSize: buttonSize * 0.1, // Adjust the text size as needed
+                color: color,
+                fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,
-              textDirection: TextDirection.rtl, // Align text to the right
+              textDirection: TextDirection.rtl,
             ),
           ],
         ),
@@ -660,8 +662,8 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
     for (int i = 0; i < longSectionOptions.length; i++) {
       currentRow.add(
         SizedBox(
-          height: 60,
-          width: 60,
+          height: 50,
+          width: 50,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(

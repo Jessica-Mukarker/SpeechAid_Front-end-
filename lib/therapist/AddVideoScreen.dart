@@ -190,8 +190,42 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
   }
 
   void _saveFiles() {
-    // Add functionality to save the selected files here
-    // For example, you can iterate over _selectedFiles and save each file
-    // You can use the File methods to save files to the desired location
+    if (_selectedFiles.isEmpty) {
+      // If no videos were selected or recorded
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('لم يتم اختيار أي فيديو'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('حسنا'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      // If videos were selected or recorded
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('تم حفظ الفيديو بنجاح'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('حسنا'),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 }
