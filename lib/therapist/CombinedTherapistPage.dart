@@ -332,8 +332,8 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
     for (int i = 0; i < arabicLetters.length; i++) {
       currentRow.add(
         SizedBox(
-          height: 50,
-          width: 50,
+          height: 60,
+          width: 60,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
@@ -394,7 +394,7 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
             borderRadius: BorderRadius.circular(20),
           ),
           child: FractionallySizedBox(
-            widthFactor: 0.8,
+            widthFactor: 0.8, // Adjust the width factor as needed
             child: Container(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -426,22 +426,6 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
                               selectedOption = titles[index];
                             });
                             Navigator.of(context).pop();
-                          }
-                          // Set the selectedOption for "المقاطع القصيرة"
-                          if (titles[index] == 'المقاطع القصيرة' &&
-                                  titles[index] == 'كسرة' ||
-                              titles[index] == 'ضمة' ||
-                              titles[index] == 'فتحة') {
-                            setState(() {
-                              selectedOption = 'المقاطع القصيرة';
-                            });
-                          } else if (titles[index] == 'المقاطع الطويلة' &&
-                                  titles[index] == 'الالف' ||
-                              titles[index] == 'الواو' ||
-                              titles[index] == 'الياء') {
-                            setState(() {
-                              selectedOption = 'المقاطع الطويلة';
-                            });
                           }
                         },
                         child: Container(
@@ -502,7 +486,7 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Text(
-                    'اختر المقطع القصير المطلوب',
+                    'اختر الحرف المطلوب',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 20,
@@ -545,9 +529,9 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
 
   List<Widget> _buildShortSectionOptions(BuildContext context) {
     final List<String> shortSectionOptions = [
-      'كسرة',
-      'ضمة',
       'فتحة',
+      'ضمة',
+      'كسرة',
     ];
 
     List<Widget> rows = [];
