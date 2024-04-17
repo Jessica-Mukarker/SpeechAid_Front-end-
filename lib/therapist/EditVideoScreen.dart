@@ -166,6 +166,61 @@ class _EditContentState extends State<EditVideoScreen> {
     );
   }
 
+  void _saveFiles() {
+    if (_selectedFiles.isEmpty) {
+      // If no files are selected, show a message
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('لم يتم تحديد أي فيديو للتحديث'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('حسنا'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      // If files are selected, show a confirmation dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('هل تريد حفظ التغييرات على الفيديو؟'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  // Add functionality to save the selected files here
+                  // For example, you can iterate over _selectedFiles and save each file
+                  // You can use the File methods to save files to the desired location
+
+                  // After saving, close the dialog
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  'نعم',
+                  style: TextStyle(color: Colors.red), // Set text color to red
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  // Close the dialog without saving
+                  Navigator.of(context).pop();
+                },
+                child: Text('لا'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
   Future<void> _selectFiles() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -187,11 +242,5 @@ class _EditContentState extends State<EditVideoScreen> {
         _selectedFiles = result.paths.map((path) => File(path!)).toList();
       });
     }
-  }
-
-  void _saveFiles() {
-    // Add functionality to save the selected files here
-    // For example, you can iterate over _selectedFiles and save each file
-    // You can use the File methods to save files to the desired location
   }
 }

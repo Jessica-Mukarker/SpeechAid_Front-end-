@@ -156,10 +156,56 @@ class _DeleteVideoScreenState extends State<DeleteVideoScreen> {
   }
 
   void _deleteSelectedFiles() {
-    setState(() {
-      _selectedFiles.clear();
-    });
-    // Here you can add the logic to delete the files from storage
-    // You may need to use platform-specific methods to delete files from storage
+    if (_selectedFiles.isEmpty) {
+      // If no files are selected, show a message
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('لم يتم تحديد أي فيديو لحذفه'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('حسنا'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      // If files are selected, show a confirmation dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('هل أنت متأكد أنك تريد حذف الفيديو؟'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  // Delete the files and close the dialog
+                  setState(() {
+                    _selectedFiles.clear();
+                  });
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  'نعم',
+                  style: TextStyle(color: Colors.red), // Set text color to red
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  // Close the dialog without deleting files
+                  Navigator.of(context).pop();
+                },
+                child: Text('لا'),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 }
