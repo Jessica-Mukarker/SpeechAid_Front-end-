@@ -4,7 +4,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:speech_aid/CustomAppBar.dart';
 import 'package:speech_aid/alphabetic.dart';
 import 'package:speech_aid/PatientProfileScreen.dart';
-import 'package:speech_aid/showRecordings.dart';
+
+import 'showRecordings.dart';
 
 class FriendlyDashboard extends StatefulWidget {
   const FriendlyDashboard({Key? key}) : super(key: key);

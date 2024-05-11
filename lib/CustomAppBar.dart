@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:speech_aid/PatientProfileScreen.dart';
-import 'package:speech_aid/showRecordings.dart';
+import 'PatientProfileScreen.dart';
+import 'showRecordings.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final int notificationCount;

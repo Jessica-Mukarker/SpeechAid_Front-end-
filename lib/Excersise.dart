@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:speech_aid/CustomAppBar.dart';
-import 'package:speech_aid/RecordingScreen.dart';
+import 'RecordingScreen.dart';
 
 class Exercise extends StatelessWidget {
   const Exercise({Key? key}) : super(key: key);
