@@ -1,23 +1,32 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-class PatientProfileScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:camera/camera.dart';
+
+class PatientProfileScreen extends StatefulWidget {
   const PatientProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  _PatientProfileScreenState createState() => _PatientProfileScreenState();
+}
+
+class _PatientProfileScreenState extends State<PatientProfileScreen> {
+  File? _imageFile;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueGrey[50], // Set background color
+      backgroundColor: Colors.blueGrey[50],
       appBar: AppBar(
         title: const Text('ملف المريض'),
-        backgroundColor:
-            const Color(0xFF528FAA), // Set app bar background color
+        backgroundColor: const Color(0xFF528FAA),
       ),
       body: Container(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
           child: Column(
             children: [
-              _buildProfileImagePicker(context), // Add profile image picker
+              _buildProfileImagePicker(context, _imageFile),
               const SizedBox(height: 20),
               _buildProfileInfo(context, 'الاسم', 'أحمد محمود'),
               const SizedBox(height: 20),
@@ -56,7 +65,7 @@ class PatientProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileImagePicker(BuildContext context) {
+  Widget _buildProfileImagePicker(BuildContext context, File? imageFile) {
     return GestureDetector(
       onTap: () {
         showModalBottomSheet(
@@ -77,8 +86,46 @@ class PatientProfileScreen extends StatelessWidget {
                   leading: const Icon(Icons.camera_alt),
                   title: const Text('التقط صورة'),
                   onTap: () async {
-                    // Implement logic to capture image from camera
+                    final cameras = await availableCameras();
+                    CameraDescription? camera;
+                    if (cameras.isEmpty) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('No Camera Available'),
+                            content: Text('Unable to find a camera.'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                      return;
+                    }
+                    camera = cameras.firstWhere(
+                      (cam) => cam.lensDirection == CameraLensDirection.front,
+                      orElse: () => cameras.first,
+                    );
                     Navigator.pop(context);
+                    final image = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TakePictureScreen(
+                          initialCamera: camera!,
+                          onPictureTaken: (File picture) {
+                            setState(() {
+                              _imageFile = picture;
+                            });
+                          },
+                        ),
+                      ),
+                    );
                   },
                 ),
               ],
@@ -101,11 +148,18 @@ class PatientProfileScreen extends StatelessWidget {
             ),
           ],
         ),
-        child: const Icon(
-          Icons.camera_alt,
-          size: 60,
-          color: Colors.grey,
-        ),
+        child: imageFile != null
+            ? ClipOval(
+                child: Image.file(
+                  imageFile,
+                  fit: BoxFit.cover,
+                ),
+              )
+            : const Icon(
+                Icons.camera_alt,
+                size: 60,
+                color: Colors.grey,
+              ),
       ),
     );
   }
@@ -115,7 +169,7 @@ class PatientProfileScreen extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white, // Set card background color
+        color: Colors.white,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
@@ -127,8 +181,7 @@ class PatientProfileScreen extends StatelessWidget {
         ],
       ),
       child: Column(
-        crossAxisAlignment:
-            CrossAxisAlignment.end, // Align content to the right
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(
             label,
@@ -136,7 +189,7 @@ class PatientProfileScreen extends StatelessWidget {
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
-            textAlign: TextAlign.right, // Align text to the right
+            textAlign: TextAlign.right,
           ),
           const SizedBox(height: 5),
           Text(
@@ -144,7 +197,127 @@ class PatientProfileScreen extends StatelessWidget {
             style: const TextStyle(
               fontSize: 16,
             ),
-            textAlign: TextAlign.right, // Align text to the right
+            textAlign: TextAlign.right,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class TakePictureScreen extends StatefulWidget {
+  final CameraDescription initialCamera;
+  final Function(File) onPictureTaken;
+
+  const TakePictureScreen({
+    Key? key,
+    required this.initialCamera,
+    required this.onPictureTaken,
+  }) : super(key: key);
+
+  @override
+  _TakePictureScreenState createState() => _TakePictureScreenState();
+}
+
+class _TakePictureScreenState extends State<TakePictureScreen> {
+  late CameraController _controller;
+  late Future<void> _initializeControllerFuture;
+  bool _isFrontCamera = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = CameraController(
+      widget.initialCamera,
+      ResolutionPreset.high,
+      enableAudio: false,
+    );
+    _initializeControllerFuture = _controller.initialize();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> _switchCamera() async {
+    final cameras = await availableCameras();
+    final newCamera = cameras.firstWhere(
+      (cam) => cam.lensDirection != widget.initialCamera.lensDirection,
+      orElse: () => widget.initialCamera,
+    );
+    setState(() {
+      _isFrontCamera = !_isFrontCamera;
+      _controller.dispose();
+      _controller = CameraController(
+        newCamera,
+        ResolutionPreset.high,
+        enableAudio: false,
+      );
+      _initializeControllerFuture = _controller.initialize();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('التقاط صورة'),
+      ),
+      body: Stack(
+        children: [
+          FutureBuilder<void>(
+            future: _initializeControllerFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return ClipRect(
+                  child: OverflowBox(
+                    alignment: Alignment.center,
+                    child: FittedBox(
+                      fit: BoxFit.cover,
+                      child: SizedBox(
+                        width: _controller.value.previewSize!.height,
+                        height: _controller.value.previewSize!.width,
+                        child: CameraPreview(_controller),
+                      ),
+                    ),
+                  ),
+                );
+              } else {
+                return const Center(child: CircularProgressIndicator());
+              }
+            },
+          ),
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: _switchCamera,
+              onDoubleTap: _switchCamera,
+              behavior: HitTestBehavior.opaque,
+              child: Container(), // This is an empty container to capture taps
+            ),
+          ),
+          Positioned.fill(
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: FloatingActionButton(
+                  onPressed: () async {
+                    try {
+                      await _initializeControllerFuture;
+                      final image = await _controller.takePicture();
+                      widget
+                          .onPictureTaken(File(image.path)); // Pass image back
+                      Navigator.pop(context);
+                    } catch (e) {
+                      print(e);
+                    }
+                  },
+                  child: const Icon(Icons.camera),
+                ),
+              ),
+            ),
           ),
         ],
       ),

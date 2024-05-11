@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'PatientProfileScreen.dart';
+import 'TherapistInfoPage.dart';
 import 'showRecordings.dart';
+import 'PatientNotificationPage.dart'; // Import the patient notification page
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final int notificationCount;
@@ -23,10 +25,27 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: title,
       actions: [
         PopupMenuButton(
-          icon: CircleAvatar(
-            backgroundImage: AssetImage(
-              'assets/${hasNotification ? 'logo_notification.png' : 'logo.png'}',
-            ),
+          icon: Stack(
+            children: [
+              CircleAvatar(
+                backgroundImage: AssetImage(
+                  'assets/${hasNotification ? 'logo_notification.png' : 'logo.png'}',
+                ),
+              ),
+              if (notificationCount > 0)
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: CircleAvatar(
+                    radius: 8,
+                    backgroundColor: Colors.red,
+                    child: Text(
+                      '$notificationCount',
+                      style: const TextStyle(color: Colors.white, fontSize: 12),
+                    ),
+                  ),
+                ),
+            ],
           ),
           itemBuilder: (BuildContext context) {
             return <PopupMenuEntry>[
@@ -158,17 +177,37 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               // Call the logout method and pass the BuildContext
               onLogout(context);
             } else if (value == 'Profile') {
-              // Navigate to DoctorProfileScreen
               Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => const PatientProfileScreen()),
+              );
+            } else if (value == 'Therapist Info') {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const TherapistInfoPage(
+                    therapistName: 'Dr. John Doe',
+                    phoneNumber: '+1234567890',
+                    address: '123 Main Street, City, Country',
+                    age: 40,
+                    hospital: 'XYZ',
+                  ),
+                ),
               );
             } else if (value == 'Recordings') {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const ShowRecording(),
+                ),
+              );
+            } else if (value == 'Notification') {
+              // Navigate to PatientNotificationPage
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PatientNotificationPage(),
                 ),
               );
             } else {
