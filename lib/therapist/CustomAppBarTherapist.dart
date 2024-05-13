@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:speech_aid/therapist/DoctorProfileScreen%20.dart';
+
+import 'ProfileScreen.dart';
+import 'TherapistNotificationPage.dart';
+import 'TherapistShowRecording.dart';
 
 class CustomAppBarTherapist extends StatelessWidget
     implements PreferredSizeWidget {
@@ -96,7 +99,7 @@ class CustomAppBarTherapist extends StatelessWidget
                         color: Colors.black,
                       ),
                     ),
-                  ], 
+                  ],
                 ),
               ),
             ];
@@ -110,7 +113,19 @@ class CustomAppBarTherapist extends StatelessWidget
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const DoctorProfileScreen()),
+                    builder: (context) => const ProfileScreen()),
+              );
+            } else if (value == 'Recordings') {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const TherapistShowRecording()),
+              );
+            } else if (value == 'Notification') {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => TherapistNotificationPage()),
               );
             } else {
               // Call the callback function for other menu items

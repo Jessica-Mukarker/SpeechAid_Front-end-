@@ -4,6 +4,7 @@ import 'package:speech_aid/therapist/CombinedTherapistPage.dart';
 import 'package:speech_aid/therapist/CustomAppBarTherapist.dart';
 import 'package:speech_aid/therapist/patientdetail.dart';
 import 'AppointmentsPage.dart';
+import 'TherapistShowRecording.dart';
 import 'VideosPage.dart';
 
 class therapistDashboard extends StatelessWidget {
@@ -14,7 +15,7 @@ class therapistDashboard extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBarTherapist(
         // Use CustomAppBarTherapist instead of AppBar
-        title: Text('صفحة الأخصائي'), // Set the title
+        title: Text('الصفحة الرئيسية'), // Set the title
         notificationCount: 0,
         onMenuItemSelected: (String value) {},
       ),
@@ -63,7 +64,13 @@ class therapistDashboard extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        // Handle button 2 action
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const TherapistShowRecording(),
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
