@@ -42,7 +42,7 @@ class _FriendlyDashboardState extends State<FriendlyDashboard> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 100),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -65,8 +65,13 @@ class _FriendlyDashboardState extends State<FriendlyDashboard> {
                           vertical: MediaQuery.of(context).size.height * 0.1,
                         ),
                       ),
-                      child:
-                          const Text('تسجيلات', style: TextStyle(fontSize: 20)),
+                      child: const Text(
+                        'تسجيلات',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(width: 20),
@@ -111,8 +116,13 @@ class _FriendlyDashboardState extends State<FriendlyDashboard> {
                           vertical: MediaQuery.of(context).size.height * 0.1,
                         ),
                       ),
-                      child: const Text('التمرينات',
-                          style: TextStyle(fontSize: 20)),
+                      child: const Text(
+                        'التمرينات',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
                   ),
                 ],

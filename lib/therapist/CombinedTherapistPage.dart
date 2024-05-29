@@ -123,7 +123,7 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
                           const Color(0xFF528FAA), // Blue color for add button
                     ),
                     const SizedBox(height: 20),
-                    _buildLargeButton(
+                    /*            _buildLargeButton(
                       icon: Icons.remove,
                       label: 'ازالة ',
                       onPressed: () {
@@ -136,6 +136,7 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
                       color: const Color.fromARGB(
                           255, 255, 174, 229), // Pink color for delete button
                     ),
+               */
                   ],
                 ),
               ),
@@ -159,13 +160,14 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
                           255, 255, 174, 229), // Pink color for update button
                     ),
                     const SizedBox(height: 20),
-                    _buildLargeButton(
+                    /*        _buildLargeButton(
                       icon: Icons.block,
                       label: 'حظر ',
                       onPressed: () {},
                       color: const Color(
                           0xFF528FAA), // Blue color for block button
                     ),
+              */
                   ],
                 ),
               ),
@@ -191,7 +193,7 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
   }) {
     final screenSize = MediaQuery.of(context).size;
     final buttonSize =
-        screenSize.width * 0.4; // Adjust the button size as needed
+        screenSize.width * 0.5; // Adjust the button size as needed
 
     return SizedBox(
       height: buttonSize,

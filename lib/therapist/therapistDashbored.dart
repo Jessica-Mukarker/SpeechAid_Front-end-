@@ -15,7 +15,13 @@ class therapistDashboard extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBarTherapist(
         // Use CustomAppBarTherapist instead of AppBar
-        title: Text('الصفحة الرئيسية'), // Set the title
+
+        title: const Center(
+          child: Text(
+            'الصفحة الرئيسية',
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
         notificationCount: 0,
         onMenuItemSelected: (String value) {},
       ),
@@ -58,8 +64,10 @@ class therapistDashboard extends StatelessWidget {
                       ),
                       child: const Text(
                         'المرضى',
-                        style: TextStyle(fontSize: 20),
-                        // Set button text size
+                        style: TextStyle(
+                            fontSize: 20,
+                            color:
+                                Colors.black), // Set button text color to black
                       ),
                     ),
                     ElevatedButton(
@@ -82,8 +90,10 @@ class therapistDashboard extends StatelessWidget {
                       ),
                       child: const Text(
                         'التسجيلات',
-                        style: TextStyle(fontSize: 20),
-                        // Set button text size
+                        style: TextStyle(
+                            fontSize: 20,
+                            color:
+                                Colors.black), // Set button text color to black
                       ),
                     ),
                     ElevatedButton(
@@ -105,8 +115,10 @@ class therapistDashboard extends StatelessWidget {
                       ),
                       child: const Text(
                         'المواعيد',
-                        style: TextStyle(fontSize: 20),
-                        // Set button text size
+                        style: TextStyle(
+                            fontSize: 20,
+                            color:
+                                Colors.black), // Set button text color to black
                       ),
                     ),
                     ElevatedButton(
@@ -114,7 +126,7 @@ class therapistDashboard extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => CombinedTherapistPage(),
+                            builder: (context) => const CombinedTherapistPage(),
                           ),
                         );
                       },
@@ -128,8 +140,10 @@ class therapistDashboard extends StatelessWidget {
                       ),
                       child: const Text(
                         'التمارين',
-                        style: TextStyle(fontSize: 20),
-                        // Set button text size
+                        style: TextStyle(
+                            fontSize: 20,
+                            color:
+                                Colors.black), // Set button text color to black
                       ),
                     ),
                   ],
