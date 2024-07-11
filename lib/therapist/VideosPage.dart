@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:speech_aid/therapist/AddVideoScreen.dart';
 import 'package:speech_aid/therapist/DeleteVideoScreen.dart';
 import 'package:speech_aid/therapist/EditVideoScreen.dart';
 
@@ -36,11 +35,11 @@ class VideosPage extends StatelessWidget {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const AddVideoScreen()),
-                        );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //       builder: (context) => const AddVideoScreen()),
+                        // );
                       },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -102,11 +101,11 @@ class VideosPage extends StatelessWidget {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const EditVideoScreen()),
-                        );
+                        // Navigator.push(
+                        //  context,
+                        // MaterialPageRoute(
+                        //    builder: (context) => const EditVideoScreen()),
+                        //);
                       },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(

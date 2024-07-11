@@ -19,10 +19,11 @@ class _signupState extends State<signup> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _idNumberController = TextEditingController();
-  final TextEditingController _dateOfBirthController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
 
   bool isSigningUp = false;
   String? _selectedItem;
+  bool _passwordVisible = false; // State variable to track password visibility
 
   @override
   void dispose() {
@@ -30,7 +31,7 @@ class _signupState extends State<signup> {
     _emailController.dispose();
     _passwordController.dispose();
     _idNumberController.dispose();
-    _dateOfBirthController.dispose();
+    _ageController.dispose();
     super.dispose();
   }
 
@@ -67,6 +68,13 @@ class _signupState extends State<signup> {
     // Check if the email contains '@' and at least one '.'
     return RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
         .hasMatch(value);
+  }
+
+  bool _validateAge(String value) {
+    // Check if the age is a number between 0 and 99
+    if (value.isEmpty) return false;
+    final int? age = int.tryParse(value);
+    return age != null && age >= 0 && age <= 99;
   }
 
   @override
@@ -152,16 +160,33 @@ class _signupState extends State<signup> {
                     filled: true,
                     fillColor: Colors.white.withOpacity(0.2),
                     prefixIcon: const Icon(Icons.password, color: Colors.white),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _passwordVisible = !_passwordVisible;
+                        });
+                      },
+                    ),
                   ),
-                  obscureText: true,
+                  obscureText: !_passwordVisible,
                 ),
                 const SizedBox(height: 20),
-                TextFormField(
-                  readOnly: true,
-                  controller: _dateOfBirthController,
+                TextField(
+                  controller: _ageController,
                   style: const TextStyle(color: Colors.white),
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                    LengthLimitingTextInputFormatter(2),
+                  ],
                   decoration: InputDecoration(
-                    hintText: "تاريخ الميلاد",
+                    hintText: "العمر",
                     hintStyle: const TextStyle(color: Colors.white),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(18),
@@ -169,23 +194,8 @@ class _signupState extends State<signup> {
                     ),
                     filled: true,
                     fillColor: Colors.white.withOpacity(0.2),
-                    prefixIcon:
-                        const Icon(Icons.calendar_today, color: Colors.white),
+                    prefixIcon: const Icon(Icons.cake, color: Colors.white),
                   ),
-                  onTap: () async {
-                    final DateTime? picked = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(1900),
-                      lastDate: DateTime.now(),
-                    );
-                    if (picked != null) {
-                      setState(() {
-                        _dateOfBirthController.text =
-                            "${picked.day}/${picked.month}/${picked.year}";
-                      });
-                    }
-                  },
                 ),
                 const SizedBox(height: 20),
                 TextField(
@@ -265,6 +275,11 @@ class _signupState extends State<signup> {
                           if (!_validateEmail(_emailController.text)) {
                             // Email validation failed
                             print('Please enter a valid email address');
+                            return;
+                          }
+                          if (!_validateAge(_ageController.text)) {
+                            // Age validation failed
+                            print('Please enter a valid age (0-99)');
                             return;
                           }
                           try {

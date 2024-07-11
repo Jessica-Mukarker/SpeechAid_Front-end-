@@ -14,13 +14,17 @@ class CombinedTherapistPage extends StatefulWidget {
 class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
   String? selectedLetter;
   String? selectedOption;
+  bool selectedOptionCheck = false;
+  List selectedOptionlong = ['ي', 'و', 'ا'];
+  List selectedOptionShort = ['َ', 'ُ', 'ِ'];
+  int? selectedLevel;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBarTherapist(
         // Use CustomAppBarTherapist instead of AppBar
-        title: Text('صفحة التماريين'), // Set the title
+        title: const Text('صفحة التماريين'), // Set the title
         notificationCount: 0,
         onMenuItemSelected: (String value) {},
       ),
@@ -43,7 +47,8 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
                           _showLettersPopup(context);
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                          backgroundColor:
+                              const Color.fromARGB(255, 255, 255, 255),
                           padding: const EdgeInsets.symmetric(
                             horizontal: 30,
                             vertical: 20,
@@ -77,7 +82,8 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
                           ]);
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                          backgroundColor:
+                              const Color.fromARGB(255, 255, 255, 255),
                           padding: const EdgeInsets.symmetric(
                             horizontal: 30,
                             vertical: 20,
@@ -116,14 +122,20 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const AddVideoScreen()),
+                              builder: (context) => AddVideoScreen(
+                                    therapist_id: "1",
+                                    exercise_level: selectedLevel!,
+                                    exercise_letter: selectedOptionCheck
+                                        ? selectedLetter! + selectedOption!
+                                        : selectedLetter!,
+                                  )),
                         );
                       },
                       color:
                           const Color(0xFF528FAA), // Blue color for add button
                     ),
                     const SizedBox(height: 20),
-                    /*            _buildLargeButton(
+                    _buildLargeButton(
                       icon: Icons.remove,
                       label: 'ازالة ',
                       onPressed: () {
@@ -136,7 +148,6 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
                       color: const Color.fromARGB(
                           255, 255, 174, 229), // Pink color for delete button
                     ),
-               */
                   ],
                 ),
               ),
@@ -153,21 +164,27 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const EditVideoScreen()),
+                              builder: (context) => EditVideoScreen(
+                                    therapist_id: "1",
+                                    exercise_level: selectedLevel!,
+                                    exercise_letter: selectedOptionCheck
+                                        ? selectedLetter! + selectedOption!
+                                        : selectedLetter!,
+                                    exerciseId: 13,
+                                  )),
                         );
                       },
                       color: const Color.fromARGB(
                           255, 255, 174, 229), // Pink color for update button
                     ),
                     const SizedBox(height: 20),
-                    /*        _buildLargeButton(
+                    _buildLargeButton(
                       icon: Icons.block,
                       label: 'حظر ',
                       onPressed: () {},
                       color: const Color(
                           0xFF528FAA), // Blue color for block button
                     ),
-              */
                   ],
                 ),
               ),
@@ -189,20 +206,17 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
     required IconData icon,
     required String label,
     required VoidCallback onPressed,
-    required Color color,
+    required Color color, // Added color parameter
   }) {
-    final screenSize = MediaQuery.of(context).size;
-    final buttonSize =
-        screenSize.width * 0.5; // Adjust the button size as needed
-
     return SizedBox(
-      height: buttonSize,
-      width: buttonSize,
+      height: 160, // Adjust the height according to your preference
+      width: 160, // Adjust the width according to your preference
+
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(buttonSize * 0.1),
+            borderRadius: BorderRadius.circular(20),
           ),
           backgroundColor: Colors.white,
         ),
@@ -211,19 +225,20 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
           children: [
             Icon(
               icon,
-              size: buttonSize * 0.25, // Adjust the icon size as needed
-              color: color,
+              size: 40, // Adjust the icon size according to your preference
+              color: color, // Use color parameter for icon color
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 8), // Add spacing between icon and text
             Text(
               label,
               style: TextStyle(
-                fontSize: buttonSize * 0.1, // Adjust the text size as needed
-                color: color,
-                fontWeight: FontWeight.bold,
+                fontSize:
+                    20, // Adjust the text size according to your preference
+                color: color, // Use color parameter for text color
+                fontWeight: FontWeight.bold, // Make text bold
               ),
               textAlign: TextAlign.center,
-              textDirection: TextDirection.rtl,
+              textDirection: TextDirection.rtl, // Align text to the right
             ),
           ],
         ),
@@ -421,14 +436,46 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
+                          setState(() {
+                            selectedLevel = index;
+                          });
                           if (titles[index] == 'المقاطع القصيرة') {
                             _showShortSectionOptions(context);
                           } else if (titles[index] == 'المقاطع الطويلة') {
                             _showLongSectionOptions(context);
-                          } else {
+                          } else if (titles[index] == 'اول الكلمة') {
+                            print("hi");
                             setState(() {
-                              selectedOption = titles[index];
+                              selectedLevel = 3;
                             });
+                            print(selectedLevel);
+                            Navigator.of(context).pop();
+                            // Navigator.of(context).pop();
+                          } else if (titles[index] == 'مقاطع ساكنة') {
+                            print("hi");
+                            setState(() {
+                              selectedLevel = 2;
+                            });
+                            print(selectedLevel);
+                            Navigator.of(context).pop();
+                            // Navigator.of(context).pop();
+                          } else if (titles[index] == 'وسط الكلمة') {
+                            print("hi");
+                            setState(() {
+                              selectedLevel = 4;
+                            });
+                            print(selectedLevel);
+                            Navigator.of(context).pop();
+                            // Navigator.of(context).pop();
+                          } else if (titles[index] == 'اخر الكلمة') {
+                            print("hi");
+                            setState(() {
+                              selectedLevel = 5;
+                            });
+                            print(selectedLevel);
+                            Navigator.of(context).pop();
+                            // Navigator.of(context).pop();
+                          } else {
                             Navigator.of(context).pop();
                           }
                         },
@@ -550,7 +597,8 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
             child: ElevatedButton(
               onPressed: () {
                 setState(() {
-                  selectedOption = shortSectionOptions[i];
+                  selectedOption = selectedOptionShort[i];
+                  selectedOptionCheck = true;
                 });
                 Navigator.of(context).pop();
               },
@@ -559,7 +607,7 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                backgroundColor: selectedOption == shortSectionOptions[i]
+                backgroundColor: selectedOption == selectedOptionShort[i]
                     ? const Color.fromARGB(255, 245, 158, 188)
                     : const Color.fromARGB(255, 207, 204, 204),
               ),
@@ -664,14 +712,14 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
     for (int i = 0; i < longSectionOptions.length; i++) {
       currentRow.add(
         SizedBox(
-          height: 50,
-          width: 50,
+          height: 60,
+          width: 60,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
               onPressed: () {
                 setState(() {
-                  selectedOption = longSectionOptions[i];
+                  selectedOption = selectedOptionlong[i];
                 });
                 Navigator.of(context).pop();
               },
@@ -680,7 +728,7 @@ class _CombinedTherapistPageState extends State<CombinedTherapistPage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                backgroundColor: selectedOption == longSectionOptions[i]
+                backgroundColor: selectedOption == selectedOptionlong[i]
                     ? const Color.fromARGB(255, 245, 158, 188)
                     : const Color.fromARGB(255, 207, 204, 204),
               ),

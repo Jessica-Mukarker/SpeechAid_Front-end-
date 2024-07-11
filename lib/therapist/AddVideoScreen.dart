@@ -1,10 +1,23 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:speech_aid/Constants.dart';
 import 'package:speech_aid/therapist/RecordingScreenTherapist.dart';
+import 'package:http/http.dart' as http;
 
 class AddVideoScreen extends StatefulWidget {
-  const AddVideoScreen({Key? key}) : super(key: key);
+  String therapist_id;
+
+  int exercise_level;
+
+  String exercise_letter;
+
+  AddVideoScreen(
+      {Key? key,
+      required this.therapist_id,
+      required this.exercise_letter,
+      required this.exercise_level})
+      : super(key: key);
 
   @override
   _AddVideoScreenState createState() => _AddVideoScreenState();
@@ -179,7 +192,7 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
         'jpeg',
         'png'
       ],
-      allowMultiple: true,
+      allowMultiple: false,
     );
 
     if (result != null) {
@@ -189,20 +202,43 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
     }
   }
 
-  void _saveFiles() {
+  List level = ['Short', 'Long', 'Silent', 'Start', 'Middle', 'End'];
+  Future<void> _saveFiles() async {
+    String apiUrl = ADDEXERCICES;
+
+    Map<String, String> headers = {"Content-type": "application/json"};
+
+    var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
+    request.files.add(await http.MultipartFile.fromPath(
+        'exercise_file', _selectedFiles.first.path));
+    request.fields['therapist_id'] = widget.therapist_id;
+    request.fields['exercise_level'] = level[widget.exercise_level];
+    request.fields['exercise_letter'] = widget.exercise_letter;
+    request.fields['exercise_description'] = "";
+    var response = await http.Response.fromStream(await request.send());
+    print(request.fields);
+    final responseStream = response.body;
+
+    print("Response Data: $responseStream");
+
+    if (response.statusCode == 200) {
+      print('Video uploaded successfully');
+    } else {
+      print('Failed to upload video. Error: ${response.statusCode}');
+    }
     if (_selectedFiles.isEmpty) {
       // If no videos were selected or recorded
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('لم يتم اختيار أي فيديو'),
+            title: const Text('لم يتم اختيار أي فيديو'),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('حسنا'),
+                child: const Text('حسنا'),
               ),
             ],
           );
@@ -214,13 +250,13 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('تم حفظ الفيديو بنجاح'),
+            title: const Text('تم حفظ الفيديو بنجاح'),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('حسنا'),
+                child: const Text('حسنا'),
               ),
             ],
           );

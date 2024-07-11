@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:speech_aid/Constants.dart';
 import 'package:speech_aid/CustomAppBar.dart';
 import 'package:speech_aid/Excersise.dart';
+import 'package:http/http.dart' as http;
 
 class Alphabetic extends StatelessWidget {
   const Alphabetic({Key? key}) : super(key: key);
@@ -27,11 +31,20 @@ class Alphabetic extends StatelessWidget {
           String letter = _getArabicLetter(index);
           return LettersCard(
             title: letter,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Exercise()),
-              );
+            onTap: () async {
+              getexcercisebyalpha(letter).then((value) {
+                print(value);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Exercise(
+                            exercicebylevel: value,
+                            therapist_id: '',
+                            exercise_id: '',
+                            exerciseUrl: '',
+                          )),
+                );
+              });
             },
           );
         }),
@@ -39,64 +52,87 @@ class Alphabetic extends StatelessWidget {
     );
   }
 
+  Future<List> getexcercisebyalpha(String alpha) async {
+    final url = "$EXERCICES?letter=$alpha";
+    try {
+      final response = await http.get(Uri.parse(url));
+      print(url);
+
+      if (response.statusCode == 200) {
+        // If the server returns a 200 OK response, parse the JSON
+        List<dynamic> exercises = json.decode(response.body);
+        print(exercises);
+        return exercises;
+      } else {
+        // If the server did not return a 200 OK response, throw an exception
+        return [];
+        throw Exception('Failed to load exercises');
+      }
+    } catch (e) {
+      // If an error occurs during the HTTP request, throw an exception
+      return [];
+      throw Exception('Failed to load exercises: $e');
+    }
+  }
+
   String _getArabicLetter(int index) {
     switch (index) {
       case 0:
-        return 'ث';
-      case 1:
-        return 'ت';
-      case 2:
-        return 'ب';
-      case 3:
         return 'أ';
+      case 1:
+        return 'ب';
+      case 2:
+        return 'ت';
+      case 3:
+        return 'ث';
       case 4:
-        return 'د';
-      case 5:
-        return 'خ';
-      case 6:
-        return 'ح';
-      case 7:
         return 'ج';
+      case 5:
+        return 'ح';
+      case 6:
+        return 'خ';
+      case 7:
+        return 'د';
       case 8:
-        return 'س';
-      case 9:
-        return 'ز';
-      case 10:
-        return 'ر';
-      case 11:
         return 'ذ';
+      case 9:
+        return 'ر';
+      case 10:
+        return 'ز';
+      case 11:
+        return 'س';
       case 12:
-        return 'ط';
-      case 13:
-        return 'ض';
-      case 14:
-        return 'ص';
-      case 15:
         return 'ش';
+      case 13:
+        return 'ص';
+      case 14:
+        return 'ض';
+      case 15:
+        return 'ط';
       case 16:
-        return 'ف';
-      case 17:
-        return 'غ';
-      case 18:
-        return 'ع';
-      case 19:
         return 'ظ';
+      case 17:
+        return 'ع';
+      case 18:
+        return 'غ';
+      case 19:
+        return 'ف';
       case 20:
-        return 'م';
-      case 21:
-        return 'ل';
-      case 22:
-        return 'ك';
-      case 23:
         return 'ق';
+      case 21:
+        return 'ك';
+      case 22:
+        return 'ل';
+      case 23:
+        return 'م';
       case 24:
-        return 'ي';
-      case 25:
-        return 'و';
-      case 26:
-        return 'ه';
-      case 27:
         return 'ن';
+      case 25:
+        return 'ه';
+      case 26:
+        return 'و';
+      case 27:
+        return 'ي';
       default:
         return '';
     }

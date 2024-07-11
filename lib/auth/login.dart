@@ -1,18 +1,34 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:speech_aid/Constants.dart';
 import 'package:speech_aid/friendlyDashboard.dart';
+import 'package:speech_aid/therapist/therapistDashbored.dart';
 import 'signup.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class login extends StatelessWidget {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final String validUsername = 'jess';
-  final String validPassword = 'jess';
+class login extends StatefulWidget {
   final String? role;
 
-  login({Key? key, this.role}) : super(key: key);
+  const login({Key? key, this.role}) : super(key: key);
+
+  @override
+  State<login> createState() => _loginState();
+}
+
+class _loginState extends State<login> {
+  String type = '';
+  final TextEditingController _emailController = TextEditingController();
+
+  final TextEditingController _passwordController = TextEditingController();
+
+  final String validUsername = 'jess';
+
+  final String validPassword = 'jess';
+  bool _passwordVisible = false; // State variable to track password visibility
 
   Future<void> signInWithGoogle(BuildContext context) async {
     try {
@@ -43,6 +59,47 @@ class login extends StatelessWidget {
     }
   }
 
+  Future<void> loginUser() async {
+    String url = Auth; // Replace with your server URL
+    print(url);
+    Map<String, String> headers = {"Content-type": "application/json"};
+    Map<String, String> body = {
+      "email": _emailController.text,
+      "password": _passwordController.text,
+      "type": type
+    };
+    var response = await http.post(Uri.parse(url),
+        headers: headers, body: json.encode(body));
+    print(response.body);
+    if (response.statusCode == 200) {
+      var responseData = json.decode(response.body);
+      // Handle response according to your needs
+// Save user data to shared preferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      if (responseData["who"] == "therapist") {
+        await prefs.setString('therapist_id',
+            responseData["therapist"]["therapist_id"].toString());
+        await prefs.setString('who', responseData["who"]);
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) =>
+                const therapistDashboard())); // Navigate to next screen or perform necessary action
+      } else if (responseData["who"] == "patient") {
+        await prefs.setString(
+            'patient_id', responseData["patient"]["patient_id"].toString());
+        await prefs.setString('who', responseData["who"]);
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const FriendlyDashboard()));
+      } else {
+        print('err');
+        // Navigator.of(context)
+        //     .push(MaterialPageRoute(builder: (context) => FriendlyDashboard()));
+      }
+    } else {
+      print("Error: ${response.reasonPhrase}");
+    }
+  }
+
   void _authenticateUser(BuildContext context) {
     String enteredUsername = _emailController.text.trim();
     String enteredPassword = _passwordController.text.trim();
@@ -50,7 +107,7 @@ class login extends StatelessWidget {
     if (enteredUsername == validUsername && enteredPassword == validPassword) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) =>  const FriendlyDashboard()),
+        MaterialPageRoute(builder: (context) => const FriendlyDashboard()),
       );
     } else {
       showDialog(
@@ -76,11 +133,13 @@ class login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String? seletcedtype;
+    String? selectedItem;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Sign In'),
+          title: const Text('صفحة التسجيل'),
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -112,7 +171,7 @@ class login extends StatelessWidget {
                   controller: _emailController,
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
-                    hintText: "اسم المستخدم",
+                    hintText: "البريد الالكتروني",
                     hintStyle: const TextStyle(color: Colors.white),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(18),
@@ -137,51 +196,102 @@ class login extends StatelessWidget {
                     filled: true,
                     fillColor: Colors.white.withOpacity(0.2),
                     prefixIcon: const Icon(Icons.password, color: Colors.white),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _passwordVisible = !_passwordVisible;
+                        });
+                      },
+                    ),
                   ),
-                  obscureText: true,
+                  obscureText: !_passwordVisible,
                 ),
+                const SizedBox(height: 20),
+                Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(18),
+                      color: Colors.white.withOpacity(0.2),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: PopupMenuButton<String>(
+                          child: type == ''
+                              ? const Text(
+                                  'من أنت',
+                                  style: TextStyle(color: Colors.white),
+                                )
+                              : Text(type,
+                                  style: const TextStyle(color: Colors.white)),
+                          onSelected: (value) {
+                            print(value);
+                            setState(() {
+                              type = value;
+                            });
+                            print(type);
+                          },
+                          itemBuilder: (BuildContext context) {
+                            return [
+                              const PopupMenuItem(
+                                value: 't',
+                                child: Text('أخصائي'),
+                              ),
+                              const PopupMenuItem(
+                                value: 'p',
+                                child: Text('مريض'),
+                              ),
+                            ];
+                          }),
+                    )),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () async {
-                    try {
-                      final credential = await FirebaseAuth.instance
-                          .signInWithEmailAndPassword(
-                              email: _emailController.text,
-                              password: _passwordController.text);
-                      Navigator.pushReplacementNamed(context, "dashboard");
-                    } on FirebaseAuthException catch (e) {
-                      if (e.code == 'user-not-found') {
-                        AwesomeDialog(
-                          context: context,
-                          dialogType: DialogType.error,
-                          //borderSide: BorderSide(color: Colors.green, width: 2),
-                          //buttonsBorderRadius: BorderRadius.all(Radius.circular(2)),
-                          // headerAnimationLoop: false,
-                          animType: AnimType.rightSlide,
-                          title: 'Error',
-                          desc: 'No user found for that email.',
-                          //showCloseIcon: true,
-                          // btnCancelOnPress: () {},
-                          //btnOkOnPress: () {},
-                        ).show();
-                        print('No user found for that email.');
-                      } else if (e.code == 'wrong-password') {
-                        AwesomeDialog(
-                          context: context,
-                          dialogType: DialogType.error,
-                          //borderSide: BorderSide(color: Colors.green, width: 2),
-                          //buttonsBorderRadius: BorderRadius.all(Radius.circular(2)),
-                          //headerAnimationLoop: false,
-                          animType: AnimType.rightSlide,
-                          title: 'Error',
-                          desc: 'Wrong password provided for that user.',
-                          //showCloseIcon: true,
-                          //btnCancelOnPress: () {},
-                          //btnOkOnPress: () {},
-                        ).show();
-                        print('Wrong password provided for that user.');
-                      }
-                    }
+                    loginUser();
+                    // try {
+                    //   final credential = await FirebaseAuth.instance
+                    //       .signInWithEmailAndPassword(
+                    //           email: _emailController.text,
+                    //           password: _passwordController.text);
+                    //   Navigator.pushReplacementNamed(context, "dashboard");
+                    // } on FirebaseAuthException catch (e) {
+                    //   if (e.code == 'user-not-found') {
+                    //     AwesomeDialog(
+                    //       context: context,
+                    //       dialogType: DialogType.error,
+                    //       //borderSide: BorderSide(color: Colors.green, width: 2),
+                    //       //buttonsBorderRadius: BorderRadius.all(Radius.circular(2)),
+                    //       // headerAnimationLoop: false,
+                    //       animType: AnimType.rightSlide,
+                    //       title: 'Error',
+                    //       desc: 'No user found for that email.',
+                    //       //showCloseIcon: true,
+                    //       // btnCancelOnPress: () {},
+                    //       //btnOkOnPress: () {},
+                    //     ).show();
+                    //     print('No user found for that email.');
+                    //   } else if (e.code == 'wrong-password') {
+                    //     AwesomeDialog(
+                    //       context: context,
+                    //       dialogType: DialogType.error,
+                    //       //borderSide: BorderSide(color: Colors.green, width: 2),
+                    //       //buttonsBorderRadius: BorderRadius.all(Radius.circular(2)),
+                    //       //headerAnimationLoop: false,
+                    //       animType: AnimType.rightSlide,
+                    //       title: 'Error',
+                    //       desc: 'Wrong password provided for that user.',
+                    //       //showCloseIcon: true,
+                    //       //btnCancelOnPress: () {},
+                    //       //btnOkOnPress: () {},
+                    //     ).show();
+                    //     print('Wrong password provided for that user.');
+                    //   }
+                    // }
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(

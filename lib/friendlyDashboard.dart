@@ -3,9 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:speech_aid/CustomAppBar.dart';
 import 'package:speech_aid/alphabetic.dart';
-import 'package:speech_aid/PatientProfileScreen.dart';
-
-import 'showRecordings.dart';
+import 'package:speech_aid/therapist/ShowRecording.dart';
 
 class FriendlyDashboard extends StatefulWidget {
   const FriendlyDashboard({Key? key}) : super(key: key);
@@ -49,10 +47,20 @@ class _FriendlyDashboardState extends State<FriendlyDashboard> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
+                        // Handle button press
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const ShowRecording(),
+                            builder: (context) => const ShowRecording(
+                              patient_id:
+                                  '13', // Replace with actual patient ID
+                              therapist_id:
+                                  '1', // Replace with actual therapist ID
+                              recrding_id:
+                                  '', // Replace with actual recording ID
+                              recordingUrl:
+                                  '', // Replace with actual recording URL
+                            ),
                           ),
                         );
                       },
@@ -65,13 +73,8 @@ class _FriendlyDashboardState extends State<FriendlyDashboard> {
                           vertical: MediaQuery.of(context).size.height * 0.1,
                         ),
                       ),
-                      child: const Text(
-                        'تسجيلات',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                        ),
-                      ),
+                      child: const Text('تسجيلات',
+                          style: TextStyle(fontSize: 20, color: Colors.black)),
                     ),
                   ),
                   const SizedBox(width: 20),
@@ -116,13 +119,8 @@ class _FriendlyDashboardState extends State<FriendlyDashboard> {
                           vertical: MediaQuery.of(context).size.height * 0.1,
                         ),
                       ),
-                      child: const Text(
-                        'التمرينات',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                        ),
-                      ),
+                      child: const Text('التمرينات',
+                          style: TextStyle(fontSize: 20, color: Colors.black)),
                     ),
                   ),
                 ],

@@ -80,8 +80,8 @@ class _DeleteVideoScreenState extends State<DeleteVideoScreen> {
         const SizedBox(height: 20),
         ElevatedButton.icon(
           onPressed: _selectFiles,
-          icon: Icon(Icons.upload_file,
-              color: const Color.fromARGB(
+          icon: const Icon(Icons.upload_file,
+              color: Color.fromARGB(
                   255, 0, 0, 0)), // Color the upload icon white
           label: const Text(
             'اختيار من الملفات',
@@ -114,12 +114,12 @@ class _DeleteVideoScreenState extends State<DeleteVideoScreen> {
               return ListTile(
                 title: Text(
                   _selectedFiles[index].path,
-                  style: TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16),
                 ),
-                leading: Icon(Icons.video_library,
+                leading: const Icon(Icons.video_library,
                     color: Colors.black), // Color the video library icon black
                 trailing: IconButton(
-                  icon: Icon(Icons.delete,
+                  icon: const Icon(Icons.delete,
                       color: Colors.red), // Color the delete icon red
                   onPressed: () {
                     setState(() {
@@ -156,56 +156,10 @@ class _DeleteVideoScreenState extends State<DeleteVideoScreen> {
   }
 
   void _deleteSelectedFiles() {
-    if (_selectedFiles.isEmpty) {
-      // If no files are selected, show a message
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('لم يتم تحديد أي فيديو لحذفه'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('حسنا'),
-              ),
-            ],
-          );
-        },
-      );
-    } else {
-      // If files are selected, show a confirmation dialog
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('هل أنت متأكد أنك تريد حذف الفيديو؟'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  // Delete the files and close the dialog
-                  setState(() {
-                    _selectedFiles.clear();
-                  });
-                  Navigator.of(context).pop();
-                },
-                child: Text(
-                  'نعم',
-                  style: TextStyle(color: Colors.red), // Set text color to red
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  // Close the dialog without deleting files
-                  Navigator.of(context).pop();
-                },
-                child: Text('لا'),
-              ),
-            ],
-          );
-        },
-      );
-    }
+    setState(() {
+      _selectedFiles.clear();
+    });
+    // Here you can add the logic to delete the files from storage
+    // You may need to use platform-specific methods to delete files from storage
   }
 }

@@ -40,7 +40,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 // Add functionality to edit profile
               },
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
                 backgroundColor: const Color(0xFF528FAA),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),

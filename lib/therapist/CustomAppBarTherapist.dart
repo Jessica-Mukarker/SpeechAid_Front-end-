@@ -112,8 +112,7 @@ class CustomAppBarTherapist extends StatelessWidget
               // Navigate to DoctorProfileScreen
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => const ProfileScreen()),
+                MaterialPageRoute(builder: (context) => const ProfileScreen()),
               );
             } else if (value == 'Recordings') {
               Navigator.push(

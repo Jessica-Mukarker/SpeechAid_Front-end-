@@ -233,7 +233,8 @@ class AppointmentButton extends StatelessWidget {
   final VoidCallback onPressed;
   final VoidCallback onDelete;
 
-  const AppointmentButton({super.key, 
+  const AppointmentButton({
+    super.key,
     required this.appointment,
     required this.onPressed,
     required this.onDelete,
@@ -310,7 +311,8 @@ class AppointmentButton extends StatelessWidget {
 class AddAppointmentButton extends StatelessWidget {
   final VoidCallback onPressed;
 
-  const AddAppointmentButton({super.key, 
+  const AddAppointmentButton({
+    super.key,
     required this.onPressed,
   });
 

@@ -43,7 +43,7 @@ class WelcomePage extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => login()),
+                        MaterialPageRoute(builder: (context) => const login()),
                       );
                     },
                   ),

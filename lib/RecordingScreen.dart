@@ -1,40 +1,81 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'package:flutter/widgets.dart';
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key, Key? key1});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Recording App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const RecordingScreen(),
-    );
-  }
-}
+import 'package:speech_aid/Constants.dart';
+import 'package:http/http.dart' as http;
+import 'package:video_player/video_player.dart';
+import 'package:path_provider/path_provider.dart';
 
 class RecordingScreen extends StatefulWidget {
-  const RecordingScreen({Key? key}) : super(key: key);
+  final String therapist_id;
+  final String patient_id;
+  final String exercise_id;
+  final String exerciseUrl;
+
+  const RecordingScreen({
+    Key? key,
+    required this.patient_id,
+    required this.therapist_id,
+    required this.exercise_id,
+    required this.exerciseUrl,
+  }) : super(key: key);
 
   @override
   _RecordingScreenState createState() => _RecordingScreenState();
 }
 
 class _RecordingScreenState extends State<RecordingScreen> {
-  CameraController? _controller;
-  bool _isRecording = false;
-  bool _isCameraMode = true;
-  int _countdown = 0;
+  late CameraController _controller;
+  late bool _isRecording;
+  late bool _isCameraMode;
+  late int _countdown;
   Timer? _timer;
+  bool intilizedvideo = false;
+  late VideoPlayerController _controllerVideo;
+  late Future<void> _initializeVideoPlayerFuture;
+  Future<void> _initializeVideoPlayer() async {
+    final uri = Uri.parse(widget.exerciseUrl);
+    print(uri);
+
+    if (widget.exerciseUrl.startsWith("http")) {
+      final response = await http.get(uri);
+      final bytes = response.bodyBytes;
+
+      // Write bytes to a temporary file
+      final tempDir = await getTemporaryDirectory();
+      final tempFile = File('${tempDir.path}/video_temp.mp4');
+      await tempFile.writeAsBytes(bytes);
+
+      _controllerVideo = VideoPlayerController.file(tempFile);
+    } else {
+      _controllerVideo = VideoPlayerController.networkUrl(uri,
+          videoPlayerOptions: VideoPlayerOptions(
+            allowBackgroundPlayback: false,
+            mixWithOthers: false,
+          ));
+    }
+
+    _initializeVideoPlayerFuture = _controllerVideo.initialize();
+    _initializeVideoPlayerFuture.then((_) {
+      setState(() {
+        intilizedvideo = true;
+      });
+      _controllerVideo.play();
+      _controllerVideo.setLooping(true);
+    });
+  }
 
   @override
   void initState() {
     super.initState();
+
+    _initializeVideoPlayer();
+
+    // _controllerVideo.setLooping(true);
+    _isRecording = false;
+    _isCameraMode = true;
+    _countdown = 0;
     _initializeCamera();
   }
 
@@ -62,7 +103,7 @@ class _RecordingScreenState extends State<RecordingScreen> {
         ResolutionPreset.medium,
       );
 
-      await _controller!.initialize();
+      await _controller.initialize();
       if (!mounted) return;
       setState(() {});
     } else {
@@ -103,7 +144,7 @@ class _RecordingScreenState extends State<RecordingScreen> {
   }
 
   void _startRecordingProcess() async {
-    await _controller!.startVideoRecording();
+    await _controller.startVideoRecording();
   }
 
   void _stopRecording() async {
@@ -113,11 +154,11 @@ class _RecordingScreenState extends State<RecordingScreen> {
       _countdown = 0;
     });
     _timer?.cancel();
-    await _controller!.stopVideoRecording();
+    XFile videoFile = await _controller.stopVideoRecording();
 
     bool? shouldSave = await _showSaveConfirmationDialog(context);
     if (shouldSave ?? false) {
-      _handleSaveRecording(context);
+      _handleSaveRecording(context, videoFile.path);
     }
   }
 
@@ -148,45 +189,25 @@ class _RecordingScreenState extends State<RecordingScreen> {
     );
   }
 
-  Future<void> _handleSaveRecording(BuildContext context) async {
-    _uploadAndSaveRecording();
-  }
+  Future<void> _handleSaveRecording(BuildContext context, String path) async {
+    String apiUrl = RECORDING;
 
-  void _uploadAndSaveRecording() async {
-    // Implement logic to upload recording to Firebase Storage and Google Drive
-    // Upload recording to Firebase Storage
-    String firebaseStorageUrl = await _uploadToFirebaseStorage();
+    Map<String, String> headers = {"Content-type": "application/json"};
 
-    // Upload recording to Google Drive
-    String googleDriveUrl = await _uploadToGoogleDrive();
+    var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
+    request.files
+        .add(await http.MultipartFile.fromPath('recording_file', path));
+    request.fields['therapist_id'] = widget.therapist_id;
+    request.fields['patient_id'] = widget.patient_id;
+    request.fields['exercise_id'] = widget.exercise_id;
+    request.fields['is_patient_url'] = "1";
+    var response = await request.send();
 
-    // Save URLs in Firebase Database
-    _saveRecordingUrls(firebaseStorageUrl, googleDriveUrl);
-
-    // Show success message to the user
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content:
-            Text('Recording saved and sent to the therapist successfully.'),
-        duration: Duration(seconds: 3),
-      ),
-    );
-  }
-
-  Future<String> _uploadToFirebaseStorage() async {
-    // Implement logic to upload recording to Firebase Storage
-    // Return the URL of the uploaded recording
-    return ''; // Placeholder URL
-  }
-
-  Future<String> _uploadToGoogleDrive() async {
-    // Implement logic to upload recording to Google Drive
-    // Return the URL of the uploaded recording
-    return ''; // Placeholder URL
-  }
-
-  void _saveRecordingUrls(String firebaseUrl, String driveUrl) {
-    // Implement logic to save URLs in Firebase Database
+    if (response.statusCode == 200) {
+      print('Video uploaded successfully');
+    } else {
+      print('Failed to upload video. Error: ${response.statusCode}');
+    }
   }
 
   void _toggleCameraMode() {
@@ -197,14 +218,15 @@ class _RecordingScreenState extends State<RecordingScreen> {
 
   @override
   void dispose() {
-    _controller?.dispose();
+    _controller.dispose();
     _timer?.cancel();
+    _controllerVideo.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!_controller!.value.isInitialized) {
+    if (!_controller.value.isInitialized) {
       return Container();
     }
 
@@ -263,45 +285,43 @@ class _RecordingScreenState extends State<RecordingScreen> {
   }
 
   Widget _buildCameraSection() {
-    return _controller != null && _controller!.value.isInitialized
+    return _controller.value.isInitialized
         ? LayoutBuilder(
             builder: (context, constraints) {
               if (constraints.maxWidth > constraints.maxHeight) {
-                // Landscape mode
                 return Row(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Expanded(
                       flex: 1,
                       child: Container(
-                        color: Colors.grey, // Placeholder color
+                        color: Colors.grey,
                         child: _buildCameraWidgetWithCountdown(),
                       ),
                     ),
                     Expanded(
                       flex: 3,
                       child: Container(
-                        child: CameraPreview(_controller!),
+                        child: CameraPreview(_controller),
                       ),
                     ),
                   ],
                 );
               } else {
-                // Portrait mode
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Expanded(
                       flex: 1,
                       child: Container(
-                        color: Colors.grey, // Placeholder color
+                        color: Colors.grey,
                         child: _buildCameraWidgetWithCountdown(),
                       ),
                     ),
                     Expanded(
                       flex: 3,
                       child: Container(
-                        child: CameraPreview(_controller!),
+                        child: CameraPreview(_controller),
                       ),
                     ),
                   ],
@@ -309,22 +329,13 @@ class _RecordingScreenState extends State<RecordingScreen> {
               }
             },
           )
-        : Container(); // Return an empty container if controller is null or not initialized
+        : Container();
   }
 
   Widget _buildCameraWidgetWithCountdown() {
     return Stack(
       alignment: Alignment.center,
       children: [
-        const Center(
-          child: Text(
-            'Your video widget here',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
         Visibility(
           visible: _countdown > 0,
           child: Text(
@@ -341,106 +352,82 @@ class _RecordingScreenState extends State<RecordingScreen> {
   }
 
   Widget _buildVideoSection() {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        if (constraints.maxWidth > constraints.maxHeight) {
-          // Landscape mode
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                flex: 3,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      color: Colors.grey, // Placeholder color
-                      child: const Center(
-                        child: Text(
-                          'Your video widget here',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            intilizedvideo
+                ? AspectRatio(
+                    aspectRatio: _controller.value.aspectRatio,
+                    child: Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: [
+                        VideoPlayer(
+                          _controllerVideo,
                         ),
-                      ),
-                    ),
-                    Visibility(
-                      visible: _countdown > 0,
-                      child: Text(
-                        _countdown == 0
-                            ? 'Start Recording'
-                            : _countdown.toString(),
-                        style: TextStyle(
-                          fontSize: 72,
-                          color: _countdown == 0
-                              ? Colors.orange
-                              : const Color(0xFF52A0AA),
-                          fontWeight: FontWeight.bold,
+                        VideoProgressIndicator(_controllerVideo,
+                            allowScrubbing: true),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            IconButton(
+                              icon: Icon(
+                                !_controllerVideo.value.isPlaying
+                                    ? Icons.play_arrow
+                                    : Icons.pause,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  if (_controllerVideo.value.isPlaying) {
+                                    _controllerVideo.pause();
+                                  } else {
+                                    _controllerVideo.play();
+                                  }
+                                });
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(
+                                Icons.replay,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _controllerVideo.seekTo(Duration.zero);
+                                  _controllerVideo.play();
+                                });
+                              },
+                            ),
+                          ],
                         ),
-                      ),
+                      ],
                     ),
-                  ],
+                  )
+                : const Center(child: CircularProgressIndicator()),
+            Visibility(
+              visible: _countdown > 0,
+              child: Text(
+                _countdown == 0 ? 'Start Recording' : _countdown.toString(),
+                style: TextStyle(
+                  fontSize: 72,
+                  color:
+                      _countdown == 0 ? Colors.orange : const Color(0xFF52A0AA),
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              Expanded(
-                flex: 1,
-                child: Container(
-                  child: CameraPreview(_controller!),
-                ),
-              ),
-            ],
-          );
-        } else {
-          // Portrait mode
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                flex: 3,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      color: Colors.grey, // Placeholder color
-                      child: const Center(
-                        child: Text(
-                          'Your video widget here',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Visibility(
-                      visible: _countdown > 0,
-                      child: Text(
-                        _countdown == 0
-                            ? 'Start Recording'
-                            : _countdown.toString(),
-                        style: TextStyle(
-                          fontSize: 72,
-                          color: _countdown == 0
-                              ? Colors.orange
-                              : const Color(0xFF52A0AA),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Container(
-                  child: CameraPreview(_controller!),
-                ),
-              ),
-            ],
-          );
-        }
-      },
+            ),
+          ],
+        ),
+        Expanded(
+          flex: 1,
+          child: Container(
+            child: CameraPreview(_controller),
+          ),
+        ),
+      ],
     );
   }
 

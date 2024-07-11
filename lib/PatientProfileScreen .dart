@@ -21,45 +21,43 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
         title: const Text('ملف المريض'),
         backgroundColor: const Color(0xFF528FAA),
       ),
-      body: Container(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-          child: Column(
-            children: [
-              _buildProfileImagePicker(context, _imageFile),
-              const SizedBox(height: 20),
-              _buildProfileInfo(context, 'الاسم', 'أحمد محمود'),
-              const SizedBox(height: 20),
-              _buildProfileInfo(context, 'العمر', '25'),
-              const SizedBox(height: 20),
-              _buildProfileInfo(context, 'الأخصائي المشرف', 'د. محمد علي'),
-              const SizedBox(height: 20),
-              _buildProfileInfo(context, 'الرقم الخاص بالمريض', 'XYZ456'),
-              const SizedBox(height: 20),
-              _buildProfileInfo(
-                  context, 'البريد الإلكتروني', 'patient@example.com'),
-              const SizedBox(height: 20),
-              _buildProfileInfo(context, 'رقم الهاتف', '+1234567890'),
-              const SizedBox(height: 40),
-              ElevatedButton(
-                onPressed: () {
-                  // Add functionality to edit profile
-                },
-                style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
-                  backgroundColor: const Color(0xFF528FAA),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-                child: const Text(
-                  'تعديل الملف الشخصي',
-                  style: TextStyle(fontSize: 18),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+        child: Column(
+          children: [
+            _buildProfileImagePicker(context, _imageFile),
+            const SizedBox(height: 20),
+            _buildProfileInfo(context, 'الاسم', 'أحمد محمود'),
+            const SizedBox(height: 20),
+            _buildProfileInfo(context, 'العمر', '25'),
+            const SizedBox(height: 20),
+            _buildProfileInfo(context, 'الأخصائي المشرف', 'د. محمد علي'),
+            const SizedBox(height: 20),
+            _buildProfileInfo(context, 'الرقم الخاص بالمريض', 'XYZ456'),
+            const SizedBox(height: 20),
+            _buildProfileInfo(
+                context, 'البريد الإلكتروني', 'patient@example.com'),
+            const SizedBox(height: 20),
+            _buildProfileInfo(context, 'رقم الهاتف', '+1234567890'),
+            const SizedBox(height: 40),
+            ElevatedButton(
+              onPressed: () {
+                // Add functionality to edit profile
+              },
+              style: ElevatedButton.styleFrom(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+                backgroundColor: const Color(0xFF528FAA),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
                 ),
               ),
-            ],
-          ),
+              child: const Text(
+                'تعديل الملف الشخصي',
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+          ],
         ),
       ),
     );
