@@ -67,3 +67,7 @@ For support or inquiries, please contact 202006932@bethlehem.edu or JessicaMukar
 
 SpeechAid is developed by Jessica Mukarker, a passionate developer dedicated to creating innovative solutions for speech therapy.
 
+## Backend Repository
+
+You can find the frontend code for SpeechAid at the following link: [SpeechAid Backend](https://github.com/Jessica-Mukarker/SpeechAid_Back-end-)
+
