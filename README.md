@@ -60,7 +60,7 @@ This project is licensed under the MIT License.
 
 ## Support
 
-For support or inquiries, please contact 202006932@bethlehem.edu or JessicaMukarker@gmail.com.
+For support or inquiries, please contact JessicaMukarker@gmail.com.
 
 
 ## About the Developer
